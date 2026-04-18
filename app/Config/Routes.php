@@ -85,3 +85,11 @@ $routes->post('/penerbit/store', 'Penerbit::store');
 $routes->get('/penerbit/edit/(:num)', 'Penerbit::edit/$1');
 $routes->post('/penerbit/update/(:num)', 'Penerbit::update/$1');
 $routes->get('/penerbit/delete/(:num)', 'Penerbit::delete/$1');
+
+// rak
+$routes->get('rak', 'Rak::index');
+$routes->get('rak/create', 'Rak::create');
+$routes->post('rak/store', 'Rak::store');
+$routes->get('rak/edit/(:num)', 'Rak::edit/$1');
+$routes->post('rak/update/(:num)', 'Rak::update/$1');
+$routes->get('rak/delete/(:num)', 'Rak::delete/$1');

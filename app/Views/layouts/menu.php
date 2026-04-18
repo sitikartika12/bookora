@@ -31,6 +31,10 @@
             <a href="<?= base_url('/peminjaman') ?>">peminjaman</a>
         </li>
 
+        <li>
+            <a href="<?= base_url('/rak') ?>">rak</a>
+        </li>
+
     <li>
         <?php $idu = session('id'); ?>
         <a href="<?= base_url('users/edit/' . $idu) ?>">Setting</a>
