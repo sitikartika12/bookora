@@ -11,16 +11,6 @@
     <input type="text" name="keyword" placeholder="Cari judul..."
         value="<?= $_GET['keyword'] ?? '' ?>">
 
-    <select name="kategori">
-        <option value="">-- Semua Kategori --</option>
-        <?php foreach ($kategori as $k): ?>
-            <option value="<?= $k['id_kategori'] ?>"
-                <?= (($_GET['kategori'] ?? '') == $k['id_kategori']) ? 'selected' : '' ?>>
-                <?= $k['nama_kategori'] ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-
     <button type="submit">Cari</button>
     <a href="<?= base_url('buku') ?>">Reset</a>
 <a href="<?= base_url('buku/print?' . http_build_query($_GET)) ?>" target="_blank">

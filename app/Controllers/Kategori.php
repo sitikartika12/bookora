@@ -49,14 +49,29 @@ class Kategori extends BaseController
     }
 
     public function update($id)
-    {
-        $this->model->update($id, [
-            'nama_kategori' => $this->request->getPost('nama_kategori')
-        ]);
+{
+    $kategoriModel = new \App\Models\KategoriModel();
 
-        return redirect()->to('/kategori');
-    }
+$kategori_baru = $this->request->getPost('kategori_baru');
 
+if (!empty($kategori_baru)) {
+    $id_kategori = $kategoriModel->insert([
+        'nama_kategori' => $kategori_baru
+    ]);
+} else {
+    $id_kategori = $this->request->getPost('id_kategori');
+}
+
+    // update buku
+    $this->bukuModel->update($id, [
+        'judul' => $this->request->getPost('judul'),
+        'isbn' => $this->request->getPost('isbn'),
+        'id_kategori' => $id_kategori,
+        'tahun_terbit' => $this->request->getPost('tahun_terbit'),
+    ]);
+
+    return redirect()->to('/buku');
+}
     public function delete($id)
     {
         $this->model->delete($id);

@@ -107,10 +107,41 @@ public function store()
         ->with('success', 'Buku berhasil dikembalikan');
 }
 
+public function perpanjang($id)
+{
+    $model = new \App\Models\PeminjamanModel();
+
+    // ambil data peminjaman
+    $peminjaman = $model->find($id);
+
+    if (!$peminjaman) {
+        return redirect()->to('/peminjaman')->with('error', 'Data tidak ditemukan');
+    }
+
+    // hanya boleh kalau masih dipinjam
+    if ($peminjaman['status'] != 'dipinjam') {
+        return redirect()->to('/peminjaman')->with('error', 'Buku sudah dikembalikan');
+    }
+
+    // tambah 7 hari dari tanggal_kembali sekarang
+    $tanggal_baru = date('Y-m-d', strtotime($peminjaman['tanggal_kembali'].' +7 days'));
+
+    $model->update($id, [
+        'tanggal_kembali' => $tanggal_baru
+    ]);
+
+    return redirect()->to('/peminjaman')->with('success', 'Peminjaman berhasil diperpanjang');
+}
+
     // ================= DELETE =================
-    public function delete($id)
-    {
-        $this->peminjaman->delete($id);
+   public function delete($id)
+{
+    // hanya admin dan anggota boleh hapus
+    if (!in_array(session()->get('role'), ['admin'])) {
         return redirect()->to('/peminjaman');
     }
+
+    $this->peminjaman->delete($id);
+    return redirect()->to('/peminjaman');
+}
 }

@@ -57,6 +57,7 @@ $routes->get('/peminjaman/create', 'Peminjaman::create');
 $routes->post('/peminjaman/store', 'Peminjaman::store');
 $routes->get('/peminjaman/detail/(:num)', 'Peminjaman::detail/$1');
 $routes->get('/peminjaman/kembali/(:num)', 'Peminjaman::kembali/$1');
+$routes->get('peminjaman/perpanjang/(:num)', 'Peminjaman::perpanjang/$1');
 $routes->get('/peminjaman/delete/(:num)', 'Peminjaman::delete/$1');
 
 // KATEGORI

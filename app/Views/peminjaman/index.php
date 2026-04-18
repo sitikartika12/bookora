@@ -27,19 +27,39 @@
     <td><?= $p['tanggal_kembali'] ?></td>
     <td><?= $p['status'] ?></td>
    <td>
+
+    <!-- SEMUA ROLE BISA DETAIL -->
     <a href="<?= base_url('peminjaman/detail/'.$p['id_peminjaman']) ?>">Detail</a>
 
-    <?php if ($p['status'] != 'dikembalikan') : ?>
-        <a href="<?= base_url('peminjaman/kembali/'.$p['id_peminjaman']) ?>">
-            Kembali
+    <!-- ANGGOTA -->
+    <?php if (session()->get('role') == 'anggota') : ?>
+
+        <?php if ($p['status'] != 'dikembalikan') : ?>
+            <a href="<?= base_url('peminjaman/kembali/'.$p['id_peminjaman']) ?>">
+                Kembali
+            </a>
+        <?php else: ?>
+            Sudah dikembalikan
+        <?php endif; ?>
+
+        <a href="<?= base_url('peminjaman/delete/'.$p['id_peminjaman']) ?>"
+           onclick="return confirm('Hapus?')">
+           Hapus
         </a>
-    <?php else: ?>
-        Sudah dikembalikan
+
     <?php endif; ?>
 
-    <a href="<?= base_url('peminjaman/delete/'.$p['id_peminjaman']) ?>" onclick="return confirm('Hapus?')">
-        Hapus
-    </a>
+
+    <!-- ADMIN -->
+    <?php if (session()->get('role') == 'admin') : ?>
+
+        <a href="<?= base_url('peminjaman/delete/'.$p['id_peminjaman']) ?>"
+           onclick="return confirm('Hapus data peminjaman?')">
+           Hapus
+        </a>
+
+    <?php endif; ?>
+
 </td>
 </tr>
 <?php endforeach; ?>
