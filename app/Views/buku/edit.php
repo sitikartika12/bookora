@@ -29,7 +29,7 @@
         </select>
 
         <br>
-<input type="text" name="kategori_baru" placeholder="Atau tambah kategori baru">
+        <input type="text" name="kategori_baru" placeholder="Atau tambah kategori baru">
     </div>
 
     <!-- PENULIS -->
@@ -46,7 +46,7 @@
         </select>
 
         <br>
-<input type="text" name="penulis_baru" placeholder="Atau tambah penulis baru">
+        <input type="text" name="penulis_baru" placeholder="Atau tambah penulis baru">
     </div>
 
     <!-- PENERBIT -->
@@ -63,20 +63,21 @@
         </select>
 
         <br>
-<input type="text" name="penerbit_baru" placeholder="Atau tambah penerbit baru">
+        <input type="text" name="penerbit_baru" placeholder="Atau tambah penerbit baru">
     </div>
 
- <!-- rak -->
-    <div>    
-    <label>Rak</label><br>
-<select name="id_rak">
-    <option value="">-- Pilih Rak --</option>
-    <?php foreach ($rak as $r): ?>
-        <option value="<?= $r['id_rak'] ?>">
-            <?= $r['nama_rak'] ?> - <?= $r['lokasi'] ?>
-        </option>
-    <?php endforeach; ?>
-</select>
+    <!-- rak -->
+    <div>
+        <label>Rak</label><br>
+        <select name="id_rak">
+            <option value="">-- Pilih Rak --</option>
+            <?php foreach ($rak as $r): ?>
+                <option value="<?= $r['id_rak'] ?>"
+                    <?= ($buku['id_rak'] ?? '') == $r['id_rak'] ? 'selected' : '' ?>>
+                    <?= $r['nama_rak'] ?> - <?= $r['lokasi'] ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
     </div>
 
     <div>
@@ -99,6 +100,7 @@
         <textarea name="deskripsi"><?= $buku['deskripsi'] ?></textarea>
     </div>
 
+    <input type="hidden" name="old_cover" value="<?= $buku['cover'] ?>">
     <!-- COVER -->
     <div>
         <label>Cover</label><br>

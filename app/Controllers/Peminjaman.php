@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\PeminjamanModel;
 use App\Models\UsersModel;
 use App\Models\DetailPeminjamanModel;
+use App\Models\BukuModel;
 
 class Peminjaman extends BaseController
 {
@@ -31,14 +32,18 @@ class Peminjaman extends BaseController
 
     // ================= FORM =================
     public function create()
-    {
-        $data = [
-            'anggota' => $this->users->where('role', 'anggota')->findAll(),
-            'petugas' => $this->users->where('role', 'petugas')->findAll(),
-        ];
+{
+    $usersModel = new UsersModel();
+    $bukuModel = new BukuModel();
 
-        return view('peminjaman/create', $data);
-    }
+    $data = [
+        'petugas' => $usersModel->where('role', 'petugas')->findAll(),
+        'anggota' => $usersModel->where('role', 'anggota')->findAll(),
+        'buku'    => $bukuModel->findAll(), // 👈 INI YANG KURANG
+    ];
+
+    return view('peminjaman/create', $data);
+}
 
 public function store()
 {
@@ -51,8 +56,8 @@ public function store()
 
     // simpan peminjaman utama
     $id_peminjaman = $peminjamanModel->insert([
-        'id_anggota' => $this->request->getPost('id_anggota'),
-        'id_petugas' => session()->get('id'),
+        'id_anggota' => session()->get('id'),
+        'id_petugas' => $this->request->getPost('id_petugas'),
         'tanggal_pinjam' => $tanggal_pinjam,
         'tanggal_kembali' => $tanggal_kembali,
         'status' => 'dipinjam'
@@ -82,16 +87,34 @@ public function store()
 
     // ================= DETAIL =================
     public function detail($id)
-    {
-        $data['peminjaman'] = $this->peminjaman
-            ->select('peminjaman.*, anggota.nama as nama_anggota, petugas.nama as nama_petugas')
-            ->join('users as anggota', 'anggota.id = peminjaman.id_anggota')
-            ->join('users as petugas', 'petugas.id = peminjaman.id_petugas')
-            ->where('id_peminjaman', $id)
-            ->first();
+{
+    $db = \Config\Database::connect();
 
-        return view('peminjaman/detail', $data);
-    }
+    // ========================
+    // DATA PEMINJAMAN (HEADER)
+    // ========================
+    $peminjaman = $db->table('peminjaman')
+        ->select('peminjaman.*, users.nama as nama_anggota')
+        ->join('users', 'users.id = peminjaman.id_anggota')
+        ->where('peminjaman.id_peminjaman', $id)
+        ->get()->getRowArray();
+
+    // ========================
+    // DETAIL BUKU (ISI)
+    // ========================
+    $detail = $db->table('detail_peminjaman')
+        ->select('detail_peminjaman.*, buku.judul')
+        ->join('buku', 'buku.id_buku = detail_peminjaman.id_buku')
+        ->where('detail_peminjaman.id_peminjaman', $id)
+        ->get()->getResultArray();
+
+    $data = [
+        'peminjaman' => $peminjaman,
+        'detail' => $detail
+    ];
+
+    return view('peminjaman/detail', $data);
+}
 
     // ================= KEMBALIKAN =================
     public function kembali($id)

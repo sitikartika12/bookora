@@ -93,3 +93,8 @@ $routes->post('rak/store', 'Rak::store');
 $routes->get('rak/edit/(:num)', 'Rak::edit/$1');
 $routes->post('rak/update/(:num)', 'Rak::update/$1');
 $routes->get('rak/delete/(:num)', 'Rak::delete/$1');
+
+//pengembalian
+$routes->get('pengembalian', 'Pengembalian::index');
+$routes->get('pengembalian/create', 'Pengembalian::create');
+$routes->post('pengembalian/store', 'Pengembalian::store');

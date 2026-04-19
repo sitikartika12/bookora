@@ -1,39 +1,55 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-
 <h3>Detail Peminjaman</h3>
 
-<table border="1">
-    <tr>
-        <td>ID Peminjaman</td>
-        <td><?= $peminjaman['id_peminjaman'] ?></td>
-    </tr>
+<!-- ========================
+     DATA PEMINJAMAN
+======================== -->
+<table border="1" cellpadding="5">
+<tr>
+    <td>Nama Anggota</td>
+    <td><?= $peminjaman['nama_anggota'] ?></td>
+</tr>
 
-    <tr>
-        <td>ID Anggota</td>
-        <td><?= $peminjaman['id_anggota'] ?></td>
-    </tr>
+<tr>
+    <td>Tanggal Pinjam</td>
+    <td><?= $peminjaman['tanggal_pinjam'] ?></td>
+</tr>
 
-    <tr>
-        <td>ID Petugas</td>
-        <td><?= $peminjaman['id_petugas'] ?></td>
-    </tr>
+<tr>
+    <td>Tanggal Kembali</td>
+    <td><?= $peminjaman['tanggal_kembali'] ?></td>
+</tr>
 
-    <tr>
-        <td>Tanggal Pinjam</td>
-        <td><?= $peminjaman['tanggal_pinjam'] ?></td>
-    </tr>
+<tr>
+    <td>Status</td>
+    <td><?= $peminjaman['status'] ?></td>
+</tr>
+</table>
 
-    <tr>
-        <td>Tanggal Kembali</td>
-        <td><?= $peminjaman['tanggal_kembali'] ?></td>
-    </tr>
+<br>
 
-    <tr>
-        <td>Status</td>
-        <td><?= $peminjaman['status'] ?></td>
-    </tr>
+<!-- ========================
+     DETAIL BUKU
+======================== -->
+<h4>Daftar Buku</h4>
+
+<table border="1" cellpadding="5">
+<tr>
+    <th>No</th>
+    <th>Judul Buku</th>
+    <th>Jumlah</th>
+</tr>
+
+<?php $no=1; foreach($detail as $d): ?>
+<tr>
+    <td><?= $no++ ?></td>
+    <td><?= $d['judul'] ?></td>
+    <td><?= $d['jumlah'] ?></td>
+</tr>
+<?php endforeach; ?>
+
 </table>
 
 <br>
