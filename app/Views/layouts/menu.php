@@ -4,41 +4,54 @@
         <a href="<?= base_url('/') ?>">Dashboard</a>
     </li>
 
-    <!-- ADMIN & PETUGAS -->
-
+    <!-- ======================
+         ADMIN & PETUGAS
+    ====================== -->
     <?php if (in_array(session()->get('role'), ['admin', 'petugas'])) : ?>
 
-    <li><a href="<?= base_url('/users') ?>">Users</a></li>
-    <li><a href="<?= base_url('/buku') ?>">Buku</a></li>
+        <li><a href="<?= base_url('/users') ?>">Users</a></li>
+        <li><a href="<?= base_url('/buku') ?>">Buku</a></li>
 
-    <!-- TAMBAHAN -->
-    <li><a href="<?= base_url('/kategori') ?>">Kategori</a></li>
-    <li><a href="<?= base_url('/penulis') ?>">Penulis</a></li>
-    <li><a href="<?= base_url('/penerbit') ?>">Penerbit</a></li>
+        <li><a href="<?= base_url('/kategori') ?>">Kategori</a></li>
+        <li><a href="<?= base_url('/penulis') ?>">Penulis</a></li>
+        <li><a href="<?= base_url('/penerbit') ?>">Penerbit</a></li>
 
-<?php endif; ?>
+        <li><a href="<?= base_url('/pengiriman') ?>">Pengiriman</a></li>
+        <li><a href="<?= base_url('/penarikan') ?>">Penarikan</a></li>
 
-    <!-- ANGGOTA -->
+    <?php endif; ?>
+
+    <!-- ======================
+         ANGGOTA
+    ====================== -->
     <?php if (session()->get('role') == 'anggota') : ?>
 
+        <li><a href="<?= base_url('/buku') ?>">Buku</a></li>
+
         <li>
-            <a href="<?= base_url('/buku') ?>">Buku</a>
+            <a href="<?= base_url('/anggota/profil') ?>">Lengkapi Profil</a>
         </li>
 
     <?php endif; ?>
 
-     <li>
-            <a href="<?= base_url('/peminjaman') ?>">peminjaman</a>
-        </li>
+    <!-- ======================
+         SEMUA ROLE
+    ====================== -->
 
-        <li>
-            <a href="<?= base_url('/pengembalian') ?>">pengembalian</a>
-        </li>
+    <li>
+        <a href="<?= base_url('/peminjaman') ?>">Peminjaman</a>
+    </li>
 
+    <li>
+        <a href="<?= base_url('/pengembalian') ?>">Pengembalian</a>
+    </li>
 
-        <li>
-            <a href="<?= base_url('/rak') ?>">rak</a>
-        </li>
+    <!-- ❌ RAK DISEMBUNYIKAN DARI ANGGOTA -->
+    <?php if (session()->get('role') != 'anggota') : ?>
+    <li>
+        <a href="<?= base_url('/rak') ?>">Rak</a>
+    </li>
+    <?php endif; ?>
 
     <li>
         <?php $idu = session('id'); ?>
@@ -48,6 +61,15 @@
     <li>
         <a href="<?= base_url('/logout') ?>">Log Out</a>
     </li>
+
+    <!-- ======================
+         BACKUP (ADMIN ONLY)
+    ====================== -->
+    <?php if (session()->get('role') == 'admin') : ?>
+        <li>
+            <a href="<?= base_url('/backup') ?>">Backup Database</a>
+        </li>
+    <?php endif; ?>
 
 </ul>
 

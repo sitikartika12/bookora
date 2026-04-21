@@ -1,3 +1,6 @@
+<?= $this->extend('layouts/main') ?>
+<?= $this->section('content') ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +9,7 @@
     <title>Tambah anggota</title>
 
     <link href="<?= base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
+    <link href="<?= base_url('assets/bootstrap-icons-1.13.1/bootstrap-icons.css') ?>" rel="stylesheet">
 </head>
 
 <body>
@@ -45,3 +49,11 @@
     <a href="<?= base_url('anggota') ?>">Kembali</a>
 
 </form>
+
+</body>
+
+<!-- Memanggil Bootstrap JS -->
+<script src="<?= base_url('assets/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+
+</html>
+<?= $this->endSection() ?>

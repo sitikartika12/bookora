@@ -33,16 +33,47 @@ class Anggota extends BaseController
     }
 
     public function store()
-    {
-        $this->anggotaModel->save([
-            'user_id' => $this->request->getPost('user_id'),
-            'nisn' => $this->request->getPost('nisn'),
-            'alamat' => $this->request->getPost('alamat'),
-            'no_hp' => $this->request->getPost('no_hp'),
-        ]);
+{
+    $anggotaModel = new \App\Models\AnggotaModel();
 
-        return redirect()->to('/anggota');
-    }
+    $anggotaModel->insert([
+        'user_id' => $this->request->getPost('user_id'),
+        'nisn'    => $this->request->getPost('nisn'),
+        'alamat'  => $this->request->getPost('alamat'),
+        'no_hp'   => $this->request->getPost('no_hp'),
+        'tanggal_daftar' => date('Y-m-d H:i:s')
+    ]);
+
+    return redirect()->to('/anggota');
+}
+
+public function editProfil()
+{
+    $anggotaModel = new \App\Models\AnggotaModel();
+
+    $id_user = session()->get('id');
+
+    $data['anggota'] = $anggotaModel
+        ->where('user_id', $id_user)
+        ->first();
+
+    return view('anggota/profil', $data);
+}
+
+public function updateProfil()
+{
+    $anggotaModel = new \App\Models\AnggotaModel();
+
+    $id_user = session()->get('id');
+
+    $anggotaModel->where('user_id', $id_user)->set([
+        'nisn' => $this->request->getPost('nisn'),
+        'alamat' => $this->request->getPost('alamat'),
+        'no_hp' => $this->request->getPost('no_hp'),
+    ])->update();
+
+    return redirect()->to('/dashboard');
+}
 
     public function delete($id)
     {

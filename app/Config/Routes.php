@@ -59,6 +59,8 @@ $routes->get('/peminjaman/detail/(:num)', 'Peminjaman::detail/$1');
 $routes->get('/peminjaman/kembali/(:num)', 'Peminjaman::kembali/$1');
 $routes->get('peminjaman/perpanjang/(:num)', 'Peminjaman::perpanjang/$1');
 $routes->get('/peminjaman/delete/(:num)', 'Peminjaman::delete/$1');
+$routes->get('peminjaman/ambil/(:num)', 'Peminjaman::ambil/$1');
+$routes->get('peminjaman/selesai/(:num)', 'Peminjaman::selesai/$1');
 
 // KATEGORI
 $routes->get('/kategori', 'Kategori::index');
@@ -98,3 +100,29 @@ $routes->get('rak/delete/(:num)', 'Rak::delete/$1');
 $routes->get('pengembalian', 'Pengembalian::index');
 $routes->get('pengembalian/create', 'Pengembalian::create');
 $routes->post('pengembalian/store', 'Pengembalian::store');
+
+// Pengiriman
+$routes->get('pengiriman', 'Pengiriman::index');
+$routes->get('pengiriman/ambil/(:num)', 'Pengiriman::ambil/$1');
+$routes->get('pengiriman/kirim/(:num)', 'Pengiriman::kirim/$1');
+$routes->get('pengiriman/sampai/(:num)', 'Pengiriman::sampai/$1');
+$routes->get('pengiriman', 'Pengiriman::index');
+$routes->get('pengiriman/saya', 'Pengiriman::saya');
+
+$routes->post('anggota/store', 'Anggota::store');
+$routes->get('anggota/profil', 'Anggota::editProfil');
+$routes->post('anggota/updateProfil', 'Anggota::updateProfil');
+
+//Backup
+$routes->get('/backup', 'Backup::index');
+
+//Restore
+$routes->get('/restore', 'Restore::index');
+$routes->post('/restore/auth', 'Restore::auth');
+$routes->get('/restore/form', 'Restore::form');
+$routes->post('/restore/process', 'Restore::process');
+
+//Penarikan
+$routes->get('penarikan/buatPenarikan/(:num)', 'Penarikan::buatPenarikan/$1');
+$routes->get('penarikan', 'Penarikan::index');
+$routes->get('penarikan/ambil/(:num)', 'Penarikan::ambil/$1');

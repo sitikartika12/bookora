@@ -18,37 +18,68 @@
     <th>Aksi</th>
 </tr>
 
-<?php $no=1; foreach($peminjaman as $p): ?>
+<?php $no = 1; ?>
+
+<?php foreach ($peminjaman as $p): ?>
+
 <tr>
     <td><?= $no++ ?></td>
     <td><?= $p['nama_anggota'] ?></td>
-    <td><?= $p['nama_petugas'] ?></td>
+    <td><?= $p['nama_petugas'] ?? '-' ?></td>
     <td><?= $p['tanggal_pinjam'] ?></td>
     <td><?= $p['tanggal_kembali'] ?></td>
     <td><?= $p['status'] ?></td>
-   <td>
+
+    <td>
 
     <!-- SEMUA ROLE BISA DETAIL -->
     <a href="<?= base_url('peminjaman/detail/'.$p['id_peminjaman']) ?>">Detail</a>
 
     <!-- ANGGOTA -->
-    <?php if (session()->get('role') == 'anggota') : ?>
+   <?php if (session()->get('role') == 'anggota') : ?>
 
-        <?php if ($p['status'] != 'dikembalikan') : ?>
-            <a href="<?= base_url('peminjaman/kembali/'.$p['id_peminjaman']) ?>">
-                Kembali
-            </a>
-        <?php else: ?>
-            Sudah dikembalikan
-        <?php endif; ?>
-
-        <a href="<?= base_url('peminjaman/delete/'.$p['id_peminjaman']) ?>"
-           onclick="return confirm('Hapus?')">
-           Hapus
+    <!-- PERPANJANG -->
+    <?php if ($p['status'] != 'dikembalikan') : ?>
+        <a href="<?= base_url('peminjaman/perpanjang/'.$p['id_peminjaman']) ?>">
+            Perpanjang
         </a>
-
     <?php endif; ?>
 
+    <!-- JIKA BUKAN ANTAR → KEMBALI MANUAL -->
+    <?php if ($p['metode'] != 'antar' && $p['status'] != 'dikembalikan') : ?>
+        <a href="<?= base_url('peminjaman/kembali/'.$p['id_peminjaman']) ?>">
+            Kembali
+        </a>
+    <?php else: ?>
+        <?php if ($p['status'] == 'dikembalikan') : ?>
+            Sudah dikembalikan
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <!-- HAPUS -->
+    <a href="<?= base_url('peminjaman/delete/'.$p['id_peminjaman']) ?>"
+       onclick="return confirm('Hapus?')">
+       Hapus
+    </a>
+
+<?php endif; ?>
+
+    <!-- PETUGAS -->
+    <?php if (session()->get('role') == 'petugas'): ?>
+
+        <?php if ($p['status'] == 'diproses'): ?>
+            <a href="<?= base_url('peminjaman/ambil/'.$p['id_peminjaman']) ?>">
+                Ambil Tugas
+            </a>
+        <?php endif; ?>
+
+        <?php if ($p['status'] == 'diantar'): ?>
+            <a href="<?= base_url('peminjaman/selesai/'.$p['id_peminjaman']) ?>">
+                Selesai
+            </a>
+        <?php endif; ?>
+
+    <?php endif; ?>
 
     <!-- ADMIN -->
     <?php if (session()->get('role') == 'admin') : ?>

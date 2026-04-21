@@ -23,6 +23,16 @@
 </tr>
 
 <tr>
+    <td>Alamat</td>
+    <td><?= $peminjaman['alamat'] ?? '-' ?></td>
+</tr>
+
+<tr>
+    <td>No HP</td>
+    <td><?= $peminjaman['no_hp'] ?? '-' ?></td>
+</tr>
+
+<tr>
     <td>Status</td>
     <td><?= $peminjaman['status'] ?></td>
 </tr>
@@ -30,6 +40,20 @@
 
 <br>
 
+<a href="<?= base_url('penarikan/buatPenarikan/' . $peminjaman['id_peminjaman']) ?>">
+    Ajukan Penarikan
+</a>
+
+<?php if ($penarikan): ?>
+    <p>Status Penarikan: <b><?= $penarikan['status'] ?></b></p>
+<?php endif; ?>
+
+
+<?php if ($penarikan && session()->get('role') == 'petugas'): ?>
+    <a href="<?= base_url('penarikan/ambil/'.$penarikan['id_penarikan']) ?>">
+        Ambil
+    </a>
+<?php endif; ?>
 <!-- ========================
      DETAIL BUKU
 ======================== -->
