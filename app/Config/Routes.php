@@ -61,7 +61,8 @@ $routes->get('peminjaman/perpanjang/(:num)', 'Peminjaman::perpanjang/$1');
 $routes->get('/peminjaman/delete/(:num)', 'Peminjaman::delete/$1');
 $routes->get('peminjaman/ambil/(:num)', 'Peminjaman::ambil/$1');
 $routes->get('peminjaman/selesai/(:num)', 'Peminjaman::selesai/$1');
-
+$routes->get('peminjaman/ajukanKembali/(:num)', 'Peminjaman::ajukanKembali/$1');
+$routes->get('peminjaman/konfirmasiKembali/(:num)', 'Peminjaman::konfirmasiKembali/$1');
 // KATEGORI
 $routes->get('/kategori', 'Kategori::index');
 $routes->get('/kategori/create', 'Kategori::create');

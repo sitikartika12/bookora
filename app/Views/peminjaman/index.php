@@ -40,6 +40,12 @@
                 <!-- ANGGOTA -->
                 <?php if (session()->get('role') == 'anggota') : ?>
 
+                    <?php if ($p['status'] == 'dipinjam'): ?>
+    <a href="<?= base_url('peminjaman/ajukanKembali/'.$p['id_peminjaman']) ?>">
+        Ajukan Pengembalian
+    </a>
+<?php endif; ?>
+
                     <?php if ($p['metode'] == 'antar' && $p['status'] != 'dikembalikan'): ?>
         <a href="<?= base_url('transaksi/bayar/' . $p['id_peminjaman']) ?>">
             Bayar
@@ -77,6 +83,15 @@
 
                 <!-- PETUGAS -->
                 <?php if (session()->get('role') == 'petugas'): ?>
+
+<?php if ($p['status'] == 'menunggu_pengembalian'): ?>
+    <span style="color:orange;">🔔 Menunggu Pengembalian</span>
+
+    <a href="<?= base_url('peminjaman/konfirmasiKembali/'.$p['id_peminjaman']) ?>">
+        Konfirmasi
+    </a>
+<?php endif; ?>
+
                     <a href="<?= base_url('peminjaman/kembali/' . $p['id_peminjaman']) ?>">
                         Kembali
                     </a>

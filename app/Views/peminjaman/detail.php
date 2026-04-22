@@ -36,6 +36,37 @@
         <td>Status</td>
         <td><?= $peminjaman['status'] ?></td>
     </tr>
+
+    <tr>
+    <td>Status Pembayaran</td>
+    <td>
+        <?php if ($transaksi): ?>
+            <?php if ($transaksi['status'] == 'lunas'): ?>
+                <span style="color:green; font-weight:bold;">LUNAS</span>
+            <?php elseif ($transaksi['status'] == 'belum_bayar'): ?>
+                <span style="color:red; font-weight:bold;">BELUM BAYAR</span>
+            <?php else: ?>
+                <?= $transaksi['status'] ?>
+            <?php endif; ?>
+        <?php else: ?>
+            -
+        <?php endif; ?>
+    </td>
+</tr>
+
+<tr>
+    <td>Total Pembayaran</td>
+    <td>
+        Rp <?= number_format($transaksi['jumlah'] ?? 0, 0, ',', '.') ?>
+    </td>
+</tr>
+
+<tr>
+    <td>Metode Pembayaran</td>
+    <td>
+        <?= $transaksi['metode'] ?? '-' ?>
+    </td>
+</tr>
 </table>
 
 <br>

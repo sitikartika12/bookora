@@ -61,7 +61,7 @@ class Peminjaman extends BaseController
     $bukuModel       = new \App\Models\BukuModel();
     $anggotaModel    = new \App\Models\AnggotaModel();
     $pengirimanModel = new \App\Models\PengirimanModel();
-    $transaksiModel  = new \App\Models\TransaksiModel(); // 🔥 TAMBAHAN
+    $transaksiModel  = new \App\Models\TransaksiModel();
 
     // ======================
     // USER LOGIN
@@ -175,6 +175,45 @@ class Peminjaman extends BaseController
         ->with('success', 'Peminjaman + transaksi berhasil dibuat');
 }
 
+public function ajukanKembali($id)
+{
+    $model = new \App\Models\PeminjamanModel();
+
+    $model->update($id, [
+        'status' => 'menunggu_pengembalian'
+    ]);
+
+    return redirect()->back()->with('success', 'Menunggu konfirmasi petugas');
+}
+
+public function konfirmasiKembali($id)
+{
+    $model = new \App\Models\PeminjamanModel();
+    $detailModel = new \App\Models\DetailPeminjamanModel();
+    $bukuModel = new \App\Models\BukuModel();
+
+    // ambil semua buku dari peminjaman
+    $detail = $detailModel
+        ->where('id_peminjaman', $id)
+        ->findAll();
+
+    // kembalikan stok buku
+    foreach ($detail as $d) {
+        $buku = $bukuModel->find($d['id_buku']);
+
+        $bukuModel->update($d['id_buku'], [
+            'tersedia' => $buku['tersedia'] + $d['jumlah']
+        ]);
+    }
+
+    // update status
+    $model->update($id, [
+        'status' => 'dikembalikan'
+    ]);
+
+    return redirect()->back()->with('success', 'Buku sudah dikembalikan');
+}
+
 
 public function bayar($id_peminjaman)
 {
@@ -189,41 +228,56 @@ public function bayar($id_peminjaman)
 
     // ================= DETAIL =================
     public function detail($id)
-    {
-        $db = \Config\Database::connect();
+{
+    $db = \Config\Database::connect();
 
-        // DATA PEMINJAMAN (HEADER)
-        $peminjaman = $db->table('peminjaman')
-            ->select('peminjaman.*, users.nama as nama_anggota, anggota.alamat, anggota.no_hp')
-            ->join('users', 'users.id = peminjaman.id_anggota')
-            ->join('anggota', 'anggota.user_id = peminjaman.id_anggota')
-            ->where('peminjaman.id_peminjaman', $id)
-            ->get()->getRowArray();
+    // ========================
+    // PEMINJAMAN
+    // ========================
+    $peminjaman = $db->table('peminjaman')
+        ->select('peminjaman.*, users.nama as nama_anggota, anggota.alamat, anggota.no_hp')
+        ->join('users', 'users.id = peminjaman.id_anggota')
+        ->join('anggota', 'anggota.user_id = peminjaman.id_anggota')
+        ->where('peminjaman.id_peminjaman', $id)
+        ->get()
+        ->getRowArray();
 
-        // DETAIL BUKU (ISI)
-        $detail = $db->table('detail_peminjaman')
-            ->select('detail_peminjaman.*, buku.judul')
-            ->join('buku', 'buku.id_buku = detail_peminjaman.id_buku')
-            ->where('detail_peminjaman.id_peminjaman', $id)
-            ->get()->getResultArray();
+    // ========================
+    // DETAIL BUKU
+    // ========================
+    $detail = $db->table('detail_peminjaman')
+        ->select('detail_peminjaman.*, buku.judul')
+        ->join('buku', 'buku.id_buku = detail_peminjaman.id_buku')
+        ->where('detail_peminjaman.id_peminjaman', $id)
+        ->get()
+        ->getResultArray();
 
-        // TAMBAHAN: DATA PENARIKAN
-        $penarikan = $db->table('penarikan')
-            ->where('id_peminjaman', $id)
-            ->get()
-            ->getRowArray();
+    // ========================
+    // TRANSAKSI
+    // ========================
+    $transaksi = $db->table('transaksi')
+        ->where('id_peminjaman', $id)
+        ->get()
+        ->getRowArray();
 
-        // ========================
-        // KIRIM KE VIEW
-        // ========================
-        $data = [
-            'peminjaman' => $peminjaman,
-            'detail' => $detail,
-            'penarikan' => $penarikan // ← ini penting
-        ];
+    // ========================
+    // PENARIKAN
+    // ========================
+    $penarikan = $db->table('penarikan')
+        ->where('id_peminjaman', $id)
+        ->get()
+        ->getRowArray();
 
-        return view('peminjaman/detail', $data);
-    }
+    // ========================
+    // KIRIM KE VIEW (FIXED)
+    // ========================
+    return view('peminjaman/detail', [
+        'peminjaman' => $peminjaman,
+        'detail'     => $detail,
+        'transaksi'  => $transaksi,
+        'penarikan'  => $penarikan
+    ]);
+}
 
     // ================= KEMBALIKAN =================
     public function kembali($id)
