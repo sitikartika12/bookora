@@ -53,7 +53,7 @@
 ======================== -->
 <label>Metode Peminjaman</label><br>
 
-<select name="metode" onchange="toggleAlamat(this.value)" required>
+<select name="metode" required onchange="toggleAlamat(this.value)">
     <option value="ambil">Ambil ke Perpustakaan</option>
     <option value="antar">Diantar ke Rumah</option>
 </select>

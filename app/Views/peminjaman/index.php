@@ -40,6 +40,13 @@
                 <!-- ANGGOTA -->
                 <?php if (session()->get('role') == 'anggota') : ?>
 
+                    <?php if ($p['metode'] == 'antar' && $p['status'] != 'dikembalikan'): ?>
+        <a href="<?= base_url('transaksi/bayar/' . $p['id_peminjaman']) ?>">
+            Bayar
+        </a>
+    <?php endif; ?>
+
+
                     <!-- PERPANJANG -->
                     <?php if ($p['status'] != 'dikembalikan') : ?>
                         <a href="<?= base_url('peminjaman/perpanjang/' . $p['id_peminjaman']) ?>">

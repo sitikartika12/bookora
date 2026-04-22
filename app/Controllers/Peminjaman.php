@@ -55,119 +55,137 @@ class Peminjaman extends BaseController
     }
 
     public function store()
-    {
-        $peminjamanModel = new \App\Models\PeminjamanModel();
-        $detailModel     = new \App\Models\DetailPeminjamanModel();
-        $bukuModel       = new \App\Models\BukuModel();
-        $anggotaModel    = new \App\Models\AnggotaModel();
-        $pengirimanModel = new \App\Models\PengirimanModel();
+{
+    $peminjamanModel = new \App\Models\PeminjamanModel();
+    $detailModel     = new \App\Models\DetailPeminjamanModel();
+    $bukuModel       = new \App\Models\BukuModel();
+    $anggotaModel    = new \App\Models\AnggotaModel();
+    $pengirimanModel = new \App\Models\PengirimanModel();
+    $transaksiModel  = new \App\Models\TransaksiModel(); // 🔥 TAMBAHAN
 
-        // ======================
-        // USER LOGIN
-        // ======================
-        $userId = session()->get('id');
+    // ======================
+    // USER LOGIN
+    // ======================
+    $userId = session()->get('id');
 
-        // ======================
-        // AMBIL DATA ANGGOTA
-        // ======================
-        $anggota = $anggotaModel->where('user_id', $userId)->first();
+    // ======================
+    // AMBIL DATA ANGGOTA
+    // ======================
+    $anggota = $anggotaModel->where('user_id', $userId)->first();
 
-        // VALIDASI PROFIL
-        if (
-            !$anggota ||
-            empty($anggota['nisn']) ||
-            empty($anggota['alamat']) ||
-            empty($anggota['no_hp'])
-        ) {
-            return redirect()->to('/anggota/profil')
-                ->with('error', 'Lengkapi profil terlebih dahulu!');
-        }
+    if (
+        !$anggota ||
+        empty($anggota['nisn']) ||
+        empty($anggota['alamat']) ||
+        empty($anggota['no_hp'])
+    ) {
+        return redirect()->to('/anggota/profil')
+            ->with('error', 'Lengkapi profil terlebih dahulu!');
+    }
 
-        // ======================
-        // METODE PINJAM
-        // ======================
-        $metodex = $this->request->getPost('metode');
-        $metode = $this->request->getPost('metode');
+    // ======================
+    // METODE PINJAM
+    // ======================
+    $metode = $this->request->getPost('metode');
 
-        if (!$metode) {
-            return redirect()->back()->with('error', 'Pilih metode peminjaman!');
-        }
+    if (!$metode) {
+        return redirect()->back()->with('error', 'Pilih metode peminjaman!');
+    }
 
-        // biaya pengiriman
-        $biaya = ($metode == 'antar') ? 10000 : 0;
+    $biaya = ($metode == 'antar') ? 10000 : 0;
 
-        // ======================
-        // SIMPAN PEMINJAMAN
-        // ======================
-        $id_peminjaman = $peminjamanModel->insert([
-            'id_anggota' => $userId,
-            'id_petugas' => null,
-            'tanggal_pinjam' => date('Y-m-d'),
-            'tanggal_kembali' => date('Y-m-d', strtotime('+7 days')),
-            'status' => ($metode == 'antar') ? 'menunggu' : 'dipinjam',
+    // ======================
+    // SIMPAN PEMINJAMAN
+    // ======================
+    $id_peminjaman = $peminjamanModel->insert([
+        'id_anggota' => $userId,
+        'id_petugas' => null,
+        'tanggal_pinjam' => date('Y-m-d'),
+        'tanggal_kembali' => date('Y-m-d', strtotime('+7 days')),
+        'status' => ($metode == 'antar') ? 'menunggu' : 'dipinjam',
+        'metode' => $metode,
+        'alamat' => ($metode == 'antar') ? $anggota['alamat'] : null
+    ]);
 
-            // 🔥 PENTING UNTUK PENARIKAN
-            'metode' => $metodex,
-            'alamat' => ($metode == 'antar') ? $anggota['alamat'] : null
+    if (!$id_peminjaman) {
+        dd($peminjamanModel->errors());
+    }
+
+    // ======================
+    // JIKA ANTAR
+    // ======================
+    if ($metode == 'antar') {
+
+        // 1. SIMPAN PENGIRIMAN
+        $pengirimanModel->insert([
+            'id_peminjaman' => $id_peminjaman,
+            'alamat' => $anggota['alamat'],
+            'biaya' => $biaya,
+            'status' => 'menunggu',
+            'petugas_id' => null
         ]);
 
-        if (!$id_peminjaman) {
-            dd($peminjamanModel->errors());
-        }
-
-        // ======================
-        // JIKA ANTAR → BUAT PENGIRIMAN
-        // ======================
-        if ($metode == 'antar') {
-            $pengirimanModel->insert([
-                'id_peminjaman' => $id_peminjaman,
-                'alamat' => $anggota['alamat'],
-                'biaya' => $biaya,
-                'status' => 'menunggu',
-                'petugas_id' => null
-            ]);
-        }
-
-        // ======================
-        // AMBIL BUKU
-        // ======================
-        $id_buku_list = $this->request->getPost('id_buku');
-        $jumlah_list  = $this->request->getPost('jumlah');
-
-        if (!$id_buku_list) {
-            return redirect()->back()->with('error', 'Pilih buku dulu!');
-        }
-
-        // ======================
-        // SIMPAN DETAIL
-        // ======================
-        foreach ($id_buku_list as $key => $id_buku) {
-
-            $jumlah = $jumlah_list[$key] ?? 1;
-
-            $buku = $bukuModel->find($id_buku);
-
-            if (!$buku) continue;
-
-            if ($buku['tersedia'] < $jumlah) {
-                return redirect()->back()
-                    ->with('error', 'Stok buku tidak cukup: ' . $buku['judul']);
-            }
-
-            $detailModel->insert([
-                'id_peminjaman' => $id_peminjaman,
-                'id_buku' => $id_buku,
-                'jumlah' => $jumlah
-            ]);
-
-            $bukuModel->update($id_buku, [
-                'tersedia' => $buku['tersedia'] - $jumlah
-            ]);
-        }
-
-        return redirect()->to('/peminjaman')
-            ->with('success', 'Peminjaman berhasil disimpan');
+        // 2. SIMPAN TRANSAKSI
+        $transaksiModel->insert([
+            'id_peminjaman' => $id_peminjaman,
+            'jenis' => 'pengiriman',
+            'jumlah' => $biaya,
+            'status' => 'belum_bayar'
+        ]);
     }
+
+    // ======================
+    // AMBIL DATA BUKU
+    // ======================
+    $id_buku_list = $this->request->getPost('id_buku');
+    $jumlah_list  = $this->request->getPost('jumlah');
+
+    if (!$id_buku_list) {
+        return redirect()->back()->with('error', 'Pilih buku dulu!');
+    }
+
+    // ======================
+    // SIMPAN DETAIL + UPDATE STOK
+    // ======================
+    foreach ($id_buku_list as $key => $id_buku) {
+
+        $jumlah = $jumlah_list[$key] ?? 1;
+
+        $buku = $bukuModel->find($id_buku);
+
+        if (!$buku) continue;
+
+        if ($buku['tersedia'] < $jumlah) {
+            return redirect()->back()
+                ->with('error', 'Stok buku tidak cukup: ' . $buku['judul']);
+        }
+
+        $detailModel->insert([
+            'id_peminjaman' => $id_peminjaman,
+            'id_buku' => $id_buku,
+            'jumlah' => $jumlah
+        ]);
+
+        $bukuModel->update($id_buku, [
+            'tersedia' => $buku['tersedia'] - $jumlah
+        ]);
+    }
+
+    return redirect()->to('/peminjaman')
+        ->with('success', 'Peminjaman + transaksi berhasil dibuat');
+}
+
+
+public function bayar($id_peminjaman)
+{
+    $transaksiModel = new \App\Models\TransaksiModel();
+
+    $transaksi = $transaksiModel
+        ->where('id_peminjaman', $id_peminjaman)
+        ->first();
+
+    return view('transaksi/bayar', ['transaksi' => $transaksi]);
+}
 
     // ================= DETAIL =================
     public function detail($id)

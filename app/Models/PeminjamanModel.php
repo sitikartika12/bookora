@@ -10,6 +10,7 @@ class PeminjamanModel extends Model
     protected $allowedFields = [
         'id_anggota',
         'id_petugas',
+        'metode',
         'tanggal_pinjam',
         'tanggal_kembali',
         'status',

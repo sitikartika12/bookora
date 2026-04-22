@@ -126,3 +126,7 @@ $routes->post('/restore/process', 'Restore::process');
 $routes->get('penarikan/buatPenarikan/(:num)', 'Penarikan::buatPenarikan/$1');
 $routes->get('penarikan', 'Penarikan::index');
 $routes->get('penarikan/ambil/(:num)', 'Penarikan::ambil/$1');
+
+//transaksi
+$routes->get('transaksi/bayar/(:num)', 'Transaksi::bayar/$1');
+$routes->post('transaksi/proses', 'Transaksi::proses');
