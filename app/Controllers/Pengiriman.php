@@ -22,9 +22,15 @@ class Pengiriman extends BaseController
     public function ambil($id)
     {
         $model = new PengirimanModel();
+        $modelpeminjaman = new \App\Models\PeminjamanModel();
 
         $model->update($id, [
             'petugas_id' => session()->get('id'),
+            'status' => 'diproses'
+        ]);
+
+        $modelpeminjaman->update($model->find($id)['id_peminjaman'], [
+            'id_petugas' => session()->get('id'),
             'status' => 'diproses'
         ]);
 
@@ -35,50 +41,54 @@ class Pengiriman extends BaseController
     public function kirim($id)
     {
         $model = new PengirimanModel();
+        $modelpeminjaman = new \App\Models\PeminjamanModel();
 
         $model->update($id, [
             'status' => 'dikirim',
             'tanggal_kirim' => date('Y-m-d')
         ]);
-
+        $modelpeminjaman->update($model->find($id)['id_peminjaman'], [
+            'id_petugas' => session()->get('id'),
+            'status' => 'dikirim'
+        ]);
         return redirect()->back();
     }
 
     // sampai
     public function sampai($id)
-{
-    $pengirimanModel = new \App\Models\PengirimanModel();
-    $peminjamanModel = new \App\Models\PeminjamanModel();
+    {
+        $pengirimanModel = new \App\Models\PengirimanModel();
+        $peminjamanModel = new \App\Models\PeminjamanModel();
 
-    // ambil data pengiriman
-    $pengiriman = $pengirimanModel->find($id);
+        // ambil data pengiriman
+        $pengiriman = $pengirimanModel->find($id);
 
-    if (!$pengiriman) {
-        return redirect()->back()->with('error', 'Data tidak ditemukan');
+        if (!$pengiriman) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan');
+        }
+
+        // update pengiriman
+        $pengirimanModel->update($id, [
+            'status' => 'selesai'
+        ]);
+
+        // sinkron ke peminjaman
+        $peminjamanModel->update($pengiriman['id_peminjaman'], [
+            'status' => 'dipinjam'
+        ]);
+
+        return redirect()->to('/pengiriman');
     }
 
-    // update pengiriman
-    $pengirimanModel->update($id, [
-        'status' => 'sampai'
-    ]);
+    public function saya()
+    {
+        $model = new \App\Models\PengirimanModel();
 
-    // sinkron ke peminjaman
-    $peminjamanModel->update($pengiriman['id_peminjaman'], [
-        'status' => 'selesai'
-    ]);
+        $data['pengiriman'] = $model
+            ->join('peminjaman', 'peminjaman.id_peminjaman = pengiriman.id_peminjaman')
+            ->where('peminjaman.id_anggota', session()->get('id'))
+            ->findAll();
 
-    return redirect()->to('/pengiriman');
-}
-
-public function saya()
-{
-    $model = new \App\Models\PengirimanModel();
-
-    $data['pengiriman'] = $model
-        ->join('peminjaman', 'peminjaman.id_peminjaman = pengiriman.id_peminjaman')
-        ->where('peminjaman.id_anggota', session()->get('id'))
-        ->findAll();
-
-    return view('pengiriman/anggota', $data);
-}
+        return view('pengiriman/anggota', $data);
+    }
 }

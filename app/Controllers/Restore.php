@@ -52,6 +52,23 @@ class Restore extends Controller
             return redirect()->back()->with('error', 'File harus berformat .sql');
         }
 
+        // TAMBAHAN : Otomatis membuat database jika belum ada
+        $dbName = 'bookora'; // Sesuaikan dengan nama database
+
+        $conn = new \mysqli('localhost', 'root', '', '');
+
+        if ($conn->connect_error) {
+            die('Koneksi gagal');
+        }
+
+        // Buat database jika belum ada
+        $conn->query("CREATE DATABASE IF NOT EXISTS $dbName");
+
+        // Pilih database
+        $conn->select_db($dbName);
+
+        // Sampai sini ----------------------------------------
+
         $db = \Config\Database::connect();
 
         try {
