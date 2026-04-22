@@ -33,7 +33,7 @@ CREATE TABLE `anggota` (
   UNIQUE KEY `nisn` (`nisn`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `anggota_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `anggota` (
 
 LOCK TABLES `anggota` WRITE;
 /*!40000 ALTER TABLE `anggota` DISABLE KEYS */;
-INSERT INTO `anggota` VALUES (2,11,'123334408','sumedang','08123456789','2026-04-20 17:00:00'),(4,14,'1234567','subang','085746852971','2026-04-20 17:00:00'),(5,15,'12345678','bandung','081256788904','2026-04-20 17:00:00'),(6,16,'0089592123','surian','081318144308','2026-04-20 17:00:00');
+INSERT INTO `anggota` VALUES (8,18,'1234567','syghbn','081022246534','2026-04-21 17:00:00'),(9,19,NULL,NULL,NULL,'2026-04-21 17:00:00'),(10,20,'74815402','sumedang','081022246534','2026-04-21 17:00:00'),(11,21,'0123456789','sumedang\r\ntanjung sari','0853456782981','2026-04-21 17:00:00');
 /*!40000 ALTER TABLE `anggota` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -75,7 +75,7 @@ CREATE TABLE `buku` (
   CONSTRAINT `buku_ibfk_1` FOREIGN KEY (`id_kategori`) REFERENCES `kategori` (`id_kategori`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `buku_ibfk_2` FOREIGN KEY (`id_penulis`) REFERENCES `penulis` (`id_penulis`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `buku_ibfk_3` FOREIGN KEY (`id_penerbit`) REFERENCES `penerbit` (`id_penerbit`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,7 +84,7 @@ CREATE TABLE `buku` (
 
 LOCK TABLES `buku` WRITE;
 /*!40000 ALTER TABLE `buku` DISABLE KEYS */;
-INSERT INTO `buku` VALUES (37,'9786234580099','cita cita dan persahabatan',3,3,3,2023,2,0,'Afif dan Jihan memiliki cita-cita tinggi untuk \"go internasional\" di bidang yang mereka minati. Mereka sangat bersemangat, bahkan sampai mengikuti kursus kelas online yang pesertanya rata-rata orang dewasa demi memperdalam kemampuan mereka','1776529804_827b1893ba60b69a80f2.jpg','2026-04-18 04:44:45',NULL),(41,'9786231031433','Bandung After Rain',1,7,2,2025,2,0,'Cerita berfokus pada Hemachandra (Hema), seorang mahasiswa yang tinggal di Bandung bersama ibundanya. Ia baru saja mengakhiri hubungan selama hampir tujuh tahun dengan kekasihnya, Rania (Ra), tepat satu bulan sebelum hari jadi mereka yang ke-7. Perpisahan ini terjadi akibat kesalahan fatal dan sikap acuh yang dilakukan Hema secara sengaja, yang membuat Rania enggan memberikan kesempatan kedua','1776529817_a612d955132bb4604458.jpg','2026-04-18 04:53:00',NULL),(46,'9786342360507','Ekonomi',2,15,14,2020,3,0,'Buku ini sangat cocok bagi pemula atau mahasiswa. Isinya fokus pada prinsip dasar ekonomi Islam, perbandingannya dengan sistem ekonomi konvensional, serta bagaimana nilai-nilai tauhid dan keadilan diterapkan dalam aktivitas pasar sehari-hari.','1776531645_9bf465c83f5473c09fc3.png','2026-04-18 17:00:45',NULL),(47,'9786230972201','Rintik Terakhir',1,1,15,2024,3,0,' Cerita berfokus pada Karang Samudra Daneswara yang terbangun dari koma selama tiga tahun setelah insiden penembakan oleh ibu kandungnya. Namun, saat terbangun, identitasnya dikuasai oleh kepribadian baru bernama Arutala Sembagi Daneswara, seorang remaja tunarungu yang dominan.','1776666328_977cdcf6e4a6c8cc9342.jpg','2026-04-20 06:25:28',NULL),(48,'9786028054928','psikologi ',2,16,16,2020,5,4,'Psikologi Belajar Orang Dewasa adalah cabang ilmu yang mempelajari bagaimana orang dewasa belajar, memahami informasi baru, dan mengembangkan keterampilan sepanjang hidupnya','1776666651_f3334195168db777c969.jpg','2026-04-20 06:30:51',NULL),(49,'9786238649372','Manajemen Pendidikan',2,17,17,2015,6,1,'Di era globalisasi dan revolusi industri 4.0, dunia pendidikan menghadapi berbagai tantangan yang kompleks dan dinamis. “Manajemen Pendidikan: Strategi Modern untuk Kepemimpinan Efektif” merupakan buku referensi yang esensial, dirancang untuk membekali para pendidik, pemimpin pendidikan, dan para stakeholder terkait dengan wawasan serta alat-alat praktis untuk mengatasi tantangan tersebut.','1776788629_65fe89a3b40a2fcf9249.jpeg','2026-04-21 16:23:49',NULL);
+INSERT INTO `buku` VALUES (37,'9786234580099','cita cita dan persahabatan',3,3,3,2023,2,3,'Afif dan Jihan memiliki cita-cita tinggi untuk \"go internasional\" di bidang yang mereka minati. Mereka sangat bersemangat, bahkan sampai mengikuti kursus kelas online yang pesertanya rata-rata orang dewasa demi memperdalam kemampuan mereka','1776529804_827b1893ba60b69a80f2.jpg','2026-04-18 04:44:45',NULL),(41,'9786231031433','Bandung After Rain',1,7,2,2025,2,1,'Cerita berfokus pada Hemachandra (Hema), seorang mahasiswa yang tinggal di Bandung bersama ibundanya. Ia baru saja mengakhiri hubungan selama hampir tujuh tahun dengan kekasihnya, Rania (Ra), tepat satu bulan sebelum hari jadi mereka yang ke-7. Perpisahan ini terjadi akibat kesalahan fatal dan sikap acuh yang dilakukan Hema secara sengaja, yang membuat Rania enggan memberikan kesempatan kedua','1776529817_a612d955132bb4604458.jpg','2026-04-18 04:53:00',NULL),(46,'9786342360507','Ekonomi',2,15,14,2020,3,3,'Buku ini sangat cocok bagi pemula atau mahasiswa. Isinya fokus pada prinsip dasar ekonomi Islam, perbandingannya dengan sistem ekonomi konvensional, serta bagaimana nilai-nilai tauhid dan keadilan diterapkan dalam aktivitas pasar sehari-hari.','1776531645_9bf465c83f5473c09fc3.png','2026-04-18 17:00:45',NULL),(47,'9786230972201','Rintik Terakhir',1,1,15,2024,3,2,' Cerita berfokus pada Karang Samudra Daneswara yang terbangun dari koma selama tiga tahun setelah insiden penembakan oleh ibu kandungnya. Namun, saat terbangun, identitasnya dikuasai oleh kepribadian baru bernama Arutala Sembagi Daneswara, seorang remaja tunarungu yang dominan.','1776666328_977cdcf6e4a6c8cc9342.jpg','2026-04-20 06:25:28',NULL),(48,'9786028054928','psikologi ',2,16,16,2020,5,5,'Psikologi Belajar Orang Dewasa adalah cabang ilmu yang mempelajari bagaimana orang dewasa belajar, memahami informasi baru, dan mengembangkan keterampilan sepanjang hidupnya','1776666651_f3334195168db777c969.jpg','2026-04-20 06:30:51',NULL),(49,'9786238649372','Manajemen Pendidikan',2,17,17,2015,6,6,'Di era globalisasi dan revolusi industri 4.0, dunia pendidikan menghadapi berbagai tantangan yang kompleks dan dinamis. “Manajemen Pendidikan: Strategi Modern untuk Kepemimpinan Efektif” merupakan buku referensi yang esensial, dirancang untuk membekali para pendidik, pemimpin pendidikan, dan para stakeholder terkait dengan wawasan serta alat-alat praktis untuk mengatasi tantangan tersebut.','1776788629_65fe89a3b40a2fcf9249.jpeg','2026-04-21 16:23:49',NULL),(50,' 9789797807214','Sabtu Bersama Bapa',1,18,18,2014,4,4,'“Hai, Satya! Hai, Cakra!” Sang Bapak melambaikan tangan.\r\n“Ini Bapak.\r\nIya, benar kok, ini Bapak.\r\nBapak cuma pindah ke tempat lain. Gak sakit. Alhamdulillah, berkat doa Satya dan Cakra.\r\n\r\n…\r\n\r\nMungkin Bapak tidak dapat duduk dan bermain di samping kalian.\r\nTapi, Bapak tetap ingin kalian tumbuh dengan Bapak di samping kalian.\r\nIngin tetap dapat bercerita kepada kalian.\r\nIngin tetap dapat mengajarkan kalian.\r\nBapak sudah siapkan.\r\n\r\nKetika punya pertanyaan, kalian tidak pernah perlu bingung ke mana harus mencari jawaban.\r\nI don’t let death take these, away from us.\r\nI don’t give death, a chance.\r\n\r\nBapak ada di sini. Di samping kalian.\r\nBapak sayang kalian.”','1776844989_c35ff27e4be97501a7d6.jpeg','2026-04-22 08:03:09',NULL),(51,' 602-6992-60-X','Biologi',2,19,19,2014,5,5,'Buku ini berisi ringkasan materi lengkap dengan peta konsep, cara cepat menghafal, serta contoh soal dan pembahasan.\r\n\r\nDengan keungggulan tersebut, buku ini dapat dijadikan sebagai buku penunjang pelajaran bagi siswa SMA untuk menghadapi ulangan harian, ujian tengah dan akhir semester, ujian sekolah, ujian nasional, bahkan SBMPTN dan USM PTN tertentu.','1776845258_9333a1575397603cb476.jpg','2026-04-22 08:07:38',NULL),(52,'978-979-22-7355-7','Komik Sains',3,20,20,2016,3,3,'Buku ini khusus untuk kamu yang selalu ingin tahu. Kamu akan menemukan jawaban dari pertanyaan yang membuat penasaran. Dijamin kamu akan mudah memahami dan menyukai sains. Dikemas dengan komik yang lucu dan menarik serta penjelasan sederhana. Siapa pun bisa jadi ahli sains.','1776871332_388037b4e3b65c5a0c44.jpg','2026-04-22 08:12:55',NULL);
 /*!40000 ALTER TABLE `buku` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +102,7 @@ CREATE TABLE `buku_rak` (
   PRIMARY KEY (`id`),
   KEY `buku_rak_ibfk_1` (`id_buku`),
   KEY `buku_rak_ibfk_2` (`id_rak`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,7 +111,7 @@ CREATE TABLE `buku_rak` (
 
 LOCK TABLES `buku_rak` WRITE;
 /*!40000 ALTER TABLE `buku_rak` DISABLE KEYS */;
-INSERT INTO `buku_rak` VALUES (13,37,1),(14,41,2),(15,46,3),(16,47,2),(17,48,3),(18,49,3);
+INSERT INTO `buku_rak` VALUES (13,37,1),(14,41,2),(15,46,3),(16,47,2),(17,48,3),(18,49,3),(19,50,2),(20,51,3),(21,52,1);
 /*!40000 ALTER TABLE `buku_rak` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +156,7 @@ CREATE TABLE `detail_peminjaman` (
   PRIMARY KEY (`id_detail`),
   KEY `detail_peminjaman_ibfk_1` (`id_peminjaman`),
   KEY `detail_peminjaman_ibfk_2` (`id_buku`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +165,7 @@ CREATE TABLE `detail_peminjaman` (
 
 LOCK TABLES `detail_peminjaman` WRITE;
 /*!40000 ALTER TABLE `detail_peminjaman` DISABLE KEYS */;
-INSERT INTO `detail_peminjaman` VALUES (16,34,37,1),(17,36,47,1),(18,37,37,1),(19,38,41,1),(20,39,46,1),(21,40,37,1),(22,41,48,1),(23,43,37,1),(24,44,41,1),(25,45,41,1),(26,46,37,1),(27,47,37,1),(28,48,37,1),(29,49,37,1),(30,50,41,1),(31,51,37,1),(32,52,37,1),(33,53,37,1),(34,54,41,1),(35,55,37,1),(36,56,37,1),(37,57,37,1),(38,58,41,1),(39,59,46,1),(40,60,47,1),(41,61,41,1),(42,62,37,1),(43,63,37,1),(44,64,41,1),(45,65,41,1),(46,66,49,1),(47,67,47,1),(48,68,41,1),(49,69,37,1),(50,70,41,1),(51,71,37,1),(52,72,41,1),(53,73,37,1),(54,74,41,1),(55,75,41,1),(56,76,46,1),(57,77,46,1),(58,78,46,1),(59,79,41,1),(60,80,41,1),(61,81,46,1),(62,82,47,1),(63,83,47,1),(64,84,47,1),(65,85,48,1),(66,86,49,1),(67,87,49,1),(68,88,49,1),(69,89,49,1),(70,90,49,1);
+INSERT INTO `detail_peminjaman` VALUES (76,96,37,1),(77,97,49,1),(78,98,41,1),(79,99,41,1),(80,104,46,1),(81,105,49,1),(82,106,51,1),(83,107,37,1),(84,108,47,1),(85,109,41,1);
 /*!40000 ALTER TABLE `detail_peminjaman` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,12 +232,12 @@ CREATE TABLE `peminjaman` (
   `id_petugas` int(11) DEFAULT NULL,
   `tanggal_pinjam` date NOT NULL,
   `tanggal_kembali` date DEFAULT NULL,
-  `status` enum('diproses','dikirim','dipinjam','dikembalikan','selesai','menunggu','sampai') DEFAULT NULL,
+  `status` enum('diproses','dikirim','dipinjam','dikembalikan','selesai','menunggu','sampai','menunggu_pengembalian') DEFAULT NULL,
   `alamat` text DEFAULT NULL,
   `metode` enum('ambil','antar') DEFAULT NULL,
   `perpanjangan` int(11) DEFAULT 0,
   PRIMARY KEY (`id_peminjaman`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,7 +246,7 @@ CREATE TABLE `peminjaman` (
 
 LOCK TABLES `peminjaman` WRITE;
 /*!40000 ALTER TABLE `peminjaman` DISABLE KEYS */;
-INSERT INTO `peminjaman` VALUES (85,15,NULL,'2026-04-21','2026-04-28','dikembalikan',NULL,'ambil',0),(86,15,13,'2026-04-21','2026-04-28','dipinjam','bandung','ambil',0),(87,15,13,'2026-04-21','2026-05-05','dipinjam','bandung','ambil',0),(88,15,13,'2026-04-21','2026-05-05','dipinjam','bandung',NULL,0),(89,15,13,'2026-04-21','2026-05-05','dipinjam','bandung',NULL,0),(90,15,NULL,'2026-04-21','2026-04-28','dipinjam',NULL,NULL,0);
+INSERT INTO `peminjaman` VALUES (108,20,NULL,'2026-04-22','2026-04-29','dipinjam',NULL,'ambil',0),(109,20,NULL,'2026-04-22','2026-04-29','menunggu','sumedang','antar',0);
 /*!40000 ALTER TABLE `peminjaman` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,7 +268,7 @@ CREATE TABLE `penarikan` (
   PRIMARY KEY (`id_penarikan`),
   KEY `penarikan_ibfk_1` (`id_peminjaman`),
   KEY `penarikan_ibfk_2` (`petugas_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -277,7 +277,7 @@ CREATE TABLE `penarikan` (
 
 LOCK TABLES `penarikan` WRITE;
 /*!40000 ALTER TABLE `penarikan` DISABLE KEYS */;
-INSERT INTO `penarikan` VALUES (6,75,'bandung',0.00,'menunggu',NULL,NULL),(7,75,'bandung',0.00,'menunggu',NULL,NULL),(8,75,'bandung',0.00,'menunggu',NULL,NULL),(9,75,'bandung',0.00,'menunggu',NULL,NULL),(10,75,'bandung',0.00,'menunggu',NULL,NULL);
+INSERT INTO `penarikan` VALUES (17,105,'sumedang',0.00,'menunggu',NULL,NULL);
 /*!40000 ALTER TABLE `penarikan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,7 +293,7 @@ CREATE TABLE `penerbit` (
   `nama_penerbit` varchar(100) NOT NULL,
   `alamat` text DEFAULT NULL,
   PRIMARY KEY (`id_penerbit`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -302,7 +302,7 @@ CREATE TABLE `penerbit` (
 
 LOCK TABLES `penerbit` WRITE;
 /*!40000 ALTER TABLE `penerbit` DISABLE KEYS */;
-INSERT INTO `penerbit` VALUES (2,'Black Swan Books','PT Sinar Angsa Media'),(3,' Gema Insani','Depok'),(4,'Kemendikbudristek','Kompleks Kemendikbudristek, Jl. Gunung Sahari Raya No. 4, Jakarta Pusat.'),(8,'gradien mediatama',NULL),(14,' UMSU PRESS',NULL),(15,' Skuad Media Cakrawala',NULL),(16,'Cipta Prima Nusantara',NULL),(17,'PT Media Penerbit Indonesia',NULL);
+INSERT INTO `penerbit` VALUES (2,'Black Swan Books','PT Sinar Angsa Media'),(3,' Gema Insani','Depok'),(4,'Kemendikbudristek','Kompleks Kemendikbudristek, Jl. Gunung Sahari Raya No. 4, Jakarta Pusat.'),(8,'gradien mediatama',NULL),(14,' UMSU PRESS',NULL),(15,' Skuad Media Cakrawala',NULL),(16,'Cipta Prima Nusantara',NULL),(17,'PT Media Penerbit Indonesia',NULL),(18,'GagasMedia',NULL),(19,'CMedia',NULL),(20,'Plants vs. Zombies',NULL);
 /*!40000 ALTER TABLE `penerbit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -347,7 +347,7 @@ CREATE TABLE `pengembalian` (
   `denda` decimal(10,2) DEFAULT 0.00,
   PRIMARY KEY (`id_pengembalian`),
   KEY `pengembalian_ibfk_1` (`id_peminjaman`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,7 +356,7 @@ CREATE TABLE `pengembalian` (
 
 LOCK TABLES `pengembalian` WRITE;
 /*!40000 ALTER TABLE `pengembalian` DISABLE KEYS */;
-INSERT INTO `pengembalian` VALUES (26,75,'2026-04-21',0.00),(27,76,'2026-04-21',0.00),(28,85,'2026-04-21',0.00);
+INSERT INTO `pengembalian` VALUES (33,107,'2026-04-22',0.00),(34,105,'2026-04-22',0.00),(35,106,'2026-04-22',0.00);
 /*!40000 ALTER TABLE `pengembalian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -378,7 +378,7 @@ CREATE TABLE `pengiriman` (
   PRIMARY KEY (`id_pengiriman`),
   KEY `pengiriman_ibfk_1` (`id_peminjaman`),
   KEY `pengiriman_ibfk_2` (`petugas_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -387,7 +387,7 @@ CREATE TABLE `pengiriman` (
 
 LOCK TABLES `pengiriman` WRITE;
 /*!40000 ALTER TABLE `pengiriman` DISABLE KEYS */;
-INSERT INTO `pengiriman` VALUES (29,75,'bandung',10000.00,'menunggu',NULL,NULL),(30,77,'bandung',10000.00,'menunggu',NULL,NULL),(31,78,'bandung',10000.00,'menunggu',NULL,NULL),(32,80,'bandung',10000.00,'menunggu',NULL,NULL),(33,82,'bandung',10000.00,'menunggu',NULL,NULL),(34,83,'bandung',10000.00,'menunggu',NULL,NULL),(35,84,'bandung',10000.00,'menunggu',NULL,NULL),(36,86,'bandung',10000.00,'selesai','2026-04-21',13),(37,87,'bandung',10000.00,'selesai','2026-04-21',13),(38,88,'bandung',10000.00,'selesai','2026-04-21',13),(39,89,'bandung',10000.00,'selesai','2026-04-21',13);
+INSERT INTO `pengiriman` VALUES (52,105,'sumedang',10000.00,'selesai','2026-04-22',13),(53,109,'sumedang',10000.00,'menunggu',NULL,NULL);
 /*!40000 ALTER TABLE `pengiriman` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -402,7 +402,7 @@ CREATE TABLE `penulis` (
   `id_penulis` int(11) NOT NULL AUTO_INCREMENT,
   `nama_penulis` varchar(100) NOT NULL,
   PRIMARY KEY (`id_penulis`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -411,7 +411,7 @@ CREATE TABLE `penulis` (
 
 LOCK TABLES `penulis` WRITE;
 /*!40000 ALTER TABLE `penulis` DISABLE KEYS */;
-INSERT INTO `penulis` VALUES (1,'Sri Puji Hartini'),(3,'Aan Wulandari'),(7,'wulan nur amalia'),(8,'khoirul trian'),(9,'aisyah nurjati'),(15,'Syahrul Amsari'),(16,'Ahmad Rifa\'i'),(17,'Dr. Saripuddin, M.Pd.I.');
+INSERT INTO `penulis` VALUES (1,'Sri Puji Hartini'),(3,'Aan Wulandari'),(7,'wulan nur amalia'),(8,'khoirul trian'),(9,'aisyah nurjati'),(15,'Syahrul Amsari'),(16,'Ahmad Rifa\'i'),(17,'Dr. Saripuddin, M.Pd.I.'),(18,'Adhitya Mulya'),(19,'Kusnadi, Msi .dk'),(20,'Xiao Jiang Nan');
 /*!40000 ALTER TABLE `penulis` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -438,7 +438,6 @@ CREATE TABLE `petugas` (
 
 LOCK TABLES `petugas` WRITE;
 /*!40000 ALTER TABLE `petugas` DISABLE KEYS */;
-INSERT INTO `petugas` VALUES (1,13,NULL);
 /*!40000 ALTER TABLE `petugas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -463,7 +462,7 @@ CREATE TABLE `rak` (
 
 LOCK TABLES `rak` WRITE;
 /*!40000 ALTER TABLE `rak` DISABLE KEYS */;
-INSERT INTO `rak` VALUES (1,'rak 1 A','lantai 1'),(2,'rak 2 A','lantai 1'),(3,'rak 3 C','lantai 1'),(4,'rak 3 D','lantai 1');
+INSERT INTO `rak` VALUES (1,'rak 1 A','lantai 1'),(2,'rak 2 A','lantai 1'),(3,'rak 3 C','lantai 1');
 /*!40000 ALTER TABLE `rak` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -509,9 +508,10 @@ CREATE TABLE `transaksi` (
   `jumlah` decimal(10,2) DEFAULT NULL,
   `status` enum('belum_bayar','lunas') DEFAULT 'belum_bayar',
   `tanggal` timestamp NOT NULL DEFAULT current_timestamp(),
+  `metode_pembayaran` enum('cod','qris','transfer') DEFAULT NULL,
   PRIMARY KEY (`id_transaksi`),
   KEY `transaksi_ibfk_1` (`id_peminjaman`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -520,6 +520,7 @@ CREATE TABLE `transaksi` (
 
 LOCK TABLES `transaksi` WRITE;
 /*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
+INSERT INTO `transaksi` VALUES (3,93,'pengiriman',10000.00,'belum_bayar','2026-04-22 04:20:09','qris'),(4,94,'pengiriman',10000.00,'belum_bayar','2026-04-22 04:26:21',NULL),(5,95,'pengiriman',10000.00,'belum_bayar','2026-04-22 04:36:26',NULL),(6,97,'pengiriman',10000.00,'lunas','2026-04-22 06:32:39','cod'),(7,98,'pengiriman',10000.00,'belum_bayar','2026-04-22 07:52:17',NULL),(8,99,'pengiriman',10000.00,'belum_bayar','2026-04-22 07:52:19',NULL),(9,100,'pengiriman',10000.00,'belum_bayar','2026-04-22 07:52:20',NULL),(10,101,'pengiriman',10000.00,'belum_bayar','2026-04-22 07:52:20',NULL),(11,102,'pengiriman',10000.00,'belum_bayar','2026-04-22 07:52:20',NULL),(12,103,'pengiriman',10000.00,'belum_bayar','2026-04-22 07:52:21',NULL),(13,105,'pengiriman',10000.00,'lunas','2026-04-22 15:23:19','cod'),(14,109,'pengiriman',10000.00,'belum_bayar','2026-04-22 16:24:59',NULL);
 /*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -570,7 +571,7 @@ CREATE TABLE `users` (
   `status` enum('aktif','nonaktif') DEFAULT 'aktif',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -579,7 +580,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'siti kartika','siti.kartika822@smk.belajar.id','kartika','$2y$10$FMQRdH0ecCbZZVWtN2n7/u1YZN/gr7X98Er4NG4sqDAWCXlZwmB6S','admin','1775889287_bb4359edba9c8703c4ac.jpg','aktif','2026-04-11 04:29:52'),(11,'insaniar','ican@gmail.com','ican','$2y$10$9nmVq82dMWEe/ZmkOOfTCurgQey1589v9rY9RH.aWPbQuW4nyp/DO','anggota','1776743322_419e1f3daa27266096cc.png','aktif','2026-04-21 03:48:42'),(13,'siti humairoh','may@gmail.com','umay','$2y$10$Ds2sohu4fltuxJQB0BW9keNQm1gNFfspDtxhQ8Mtlc09MZug4Z61y','petugas','1776743567_c2e811be809178fafe49.png','aktif','2026-04-21 03:52:47'),(14,'shalis shatul','shalis@gmail.com','ute','$2y$10$jyyD9y4hCKs152wMMr1RquUD6L/HwpqjearaTzqzFvaceXf4TIG7G','anggota','1776746993_f9a55f89356d59e032f8.png','aktif','2026-04-21 04:49:53'),(15,'imey siti','mey@gmail.com','imey','$2y$10$PlGoZ1WhaKXovhVjDIsEkemYyr3PdZ0RMwMoXJ70A86uy1YagQoey','anggota','1776747941_d3a449d33e729a47c672.png','aktif','2026-04-21 05:05:41'),(16,'iis sadiyah','iissadiyah@gmail.com','iscntp','$2y$10$iegFNqRrwtkAESoHPGUaIegRTN25P/0F9wuGX9oYIgjUiDmQ0yuqu','anggota','1776754608_e5dd5c76fd997bde0fb0.png','aktif','2026-04-21 06:56:48');
+INSERT INTO `users` VALUES (1,'siti kartika','siti.kartika822@smk.belajar.id','kartika','$2y$10$FMQRdH0ecCbZZVWtN2n7/u1YZN/gr7X98Er4NG4sqDAWCXlZwmB6S','admin','1775889287_bb4359edba9c8703c4ac.jpg','aktif','2026-04-11 04:29:52'),(13,'siti humairoh','may@gmail.com','umay','$2y$10$Ds2sohu4fltuxJQB0BW9keNQm1gNFfspDtxhQ8Mtlc09MZug4Z61y','petugas','1776743567_c2e811be809178fafe49.png','aktif','2026-04-21 03:52:47'),(18,'ayu riska','ayu@gmail.com','ayu','$2y$10$UXANX/uPRPNpeXtNypY.T.kFgD7ZNsL9l/87i08cU6HKR8k9KbGrW','anggota','1776838551_e6b2fa7b83d4b6cb1cf4.jpg','aktif','2026-04-22 06:15:51'),(19,'shalis shatul','shalis@gmail.com','ute','$2y$10$t0kAaqw2z6zjCTdPbi1xXOxrVPrc2qtfXRBt1Dpbkts.V1fFvjebO','anggota','1776839108_40cd5f8e61d5986a8b1a.jpg','aktif','2026-04-22 06:25:08'),(20,'imey siti','imey@gmail.com','imey','$2y$10$G.la.fmavkCh6nQdAN2S9ecM5GfcwOhjfyK6dAdvAW.s2uZ1L5Mra','anggota','1776839224_d0b46ad7ba4a7fe8b035.jpg','aktif','2026-04-22 06:27:05'),(21,'insaniar','ican@gmail.com','ican','$2y$10$ENGivdZqd1wRqhJKLmI2ouAvnxI.P6cAr/PvG3Gie3L1DgHK6i36y','anggota','1776839356_7f03936ea3eb0aa93efc.png','aktif','2026-04-22 06:27:53');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -592,4 +593,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-22  4:17:39
+-- Dump completed on 2026-04-22 23:43:58

@@ -58,10 +58,6 @@
         <a href="<?= base_url('users/edit/' . $idu) ?>">Setting</a>
     </li>
 
-    <li>
-        <a href="<?= base_url('/logout') ?>">Log Out</a>
-    </li>
-
     <!-- ======================
          BACKUP (ADMIN ONLY)
     ====================== -->
@@ -70,6 +66,10 @@
             <a href="<?= base_url('/backup') ?>">Backup Database</a>
         </li>
     <?php endif; ?>
+
+    <li>
+        <a href="<?= base_url('/logout') ?>">Log Out</a>
+    </li>
 
 </ul>
 
