@@ -69,6 +69,12 @@
                 <!-- ANGGOTA -->
                 <?php if (session()->get('role') == 'anggota') : ?>
 
+                    <?php if ($p['status'] == 'dipinjam' || $p['status'] == 'diperpanjang'): ?>
+    <a href="<?= base_url('peminjaman/ajukanKembali/' . $p['id_peminjaman']) ?>">
+        Ajukan Pengembalian
+    </a>
+<?php endif; ?>
+
                     <?php if ($p['status'] == 'dipinjam'): ?>
                         <a href="<?= base_url('peminjaman/ajukanKembali/' . $p['id_peminjaman']) ?>">
                             Ajukan Pengembalian
@@ -132,26 +138,34 @@
                     <?php if ($p['status'] == 'menunggu_pengembalian'): ?>
                         <span style="color:orange;">🔔 Menunggu Pengembalian</span>
 
-                        <a href="<?= base_url('peminjaman/konfirmasiKembali/' . $p['id_peminjaman']) ?>">
-                            Konfirmasi
+                        <a href="<?= base_url('peminjaman/kembali/' . $p['id_peminjaman']) ?>">
+                            verifikasi
                         </a>
                     <?php endif; ?>
 
-                    <a href="<?= base_url('peminjaman/kembali/' . $p['id_peminjaman']) ?>">
-                        Kembali
-                    </a>
+                    <?php if ($p['status'] == 'menunggu_perpanjangan'): ?>
 
-                    <?php if ($p['status'] == 'diproses'): ?>
-                        <a href="<?= base_url('peminjaman/ambil/' . $p['id_peminjaman']) ?>">
-                            Ambil Tugas
-                        </a>
-                    <?php endif; ?>
+    <span style="color:orange;">🔔 Menunggu perpanjangan</span>
 
-                    <?php if ($p['status'] == 'diantar'): ?>
-                        <a href="<?= base_url('peminjaman/selesai/' . $p['id_peminjaman']) ?>">
-                            Selesai
-                        </a>
-                    <?php endif; ?>
+    <a href="<?= base_url('peminjaman/konfirmasiperpanjangan/'.$p['id_peminjaman']) ?>" 
+       onclick="return confirm('Konfirmasi perpanjangan?')">
+        Verifikasi Perpanjangan
+    </a>
+
+<?php endif; ?>
+
+
+<?php if ($p['status'] == 'diproses'): ?>
+    <a href="<?= base_url('peminjaman/ambil/' . $p['id_peminjaman']) ?>">
+        Ambil Tugas
+    </a>
+<?php endif; ?>
+
+<?php if ($p['status'] == 'diantar'): ?>
+    <a href="<?= base_url('peminjaman/selesai/' . $p['id_peminjaman']) ?>">
+        Selesai
+    </a>
+<?php endif; ?>
 
                 <?php endif; ?>
 

@@ -294,6 +294,21 @@ foreach ($data['peminjaman'] as &$p) {
     return redirect()->back()->with('success', 'Pengembalian diajukan');
 }
 
+public function konfirmasiPerpanjangan($id)
+{
+    $pinjam = $this->peminjaman->find($id);
+
+    // contoh: tambah 3 hari
+    $tanggalBaru = date('Y-m-d', strtotime($pinjam['tanggal_kembali'] . ' +3 days'));
+
+    $this->peminjaman->update($id, [
+        'status' => 'diperpanjang',
+        'tanggal_kembali' => $tanggalBaru
+    ]);
+
+    return redirect()->to('/peminjaman')->with('success', 'Perpanjangan berhasil diverifikasi');
+}
+
   public function konfirmasiKembali($id)
 {
     $peminjamanModel = new \App\Models\PeminjamanModel();
@@ -426,7 +441,30 @@ public function proses()
         'penarikan'  => $penarikan
     ]);
 }
+public function verifikasi($id)
+{
+    $model = new \App\Models\TransaksiModel();
+    $peminjamanModel = new \App\Models\PeminjamanModel();
 
+    // ambil data transaksi dulu
+    $trx = $model->find($id);
+
+    if (!$trx) {
+        return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
+    }
+
+    // update transaksi jadi lunas
+    $model->update($id, [
+        'status' => 'lunas'
+    ]);
+
+    // 🔥 update peminjaman juga
+    $peminjamanModel->update($trx['id_peminjaman'], [
+        'status' => 'dikembalikan'
+    ]);
+
+    return redirect()->back()->with('success', 'Berhasil diverifikasi & status diperbarui');
+}
     // ================= KEMBALIKAN =================
     public function kembali($id)
 {
@@ -467,67 +505,53 @@ public function proses()
     public function perpanjang($id)
 {
     $model = new \App\Models\PeminjamanModel();
+    $p = $model->find($id);
 
-    $peminjaman = $model->find($id);
-
-    if (!$peminjaman) {
+    if (!$p) {
         return redirect()->back()->with('error', 'Data tidak ditemukan');
     }
 
-    // ❌ sudah dikembalikan
-    if ($peminjaman['status'] == 'dikembalikan') {
+    if ($p['status'] == 'dikembalikan') {
         return redirect()->back()->with('error', 'Buku sudah dikembalikan');
     }
 
-    // ❌ LIMIT 2X PERPANJANG (INI WAJIB)
-    if ((int)$peminjaman['perpanjangan'] >= 2) {
-
-        // update status biar jelas
-        $model->update($id, [
-            'status' => 'dipinjam'
-        ]);
-
-        return redirect()->back()
-            ->with('error', '❌ Tidak bisa perpanjang lagi, maksimal 2 kali');
+    if ((int)$p['perpanjangan'] >= 2) {
+        return redirect()->back()->with('error', 'Maksimal 2 kali perpanjangan');
     }
 
-    // kalau pakai sistem approval petugas
+    // kirim ke petugas untuk verifikasi
     $model->update($id, [
         'status' => 'menunggu_perpanjangan'
     ]);
 
-    return redirect()->back()
-        ->with('success', 'Menunggu persetujuan petugas');
+    return redirect()->back()->with('success', 'Menunggu persetujuan petugas');
 }
 
   public function setujuiPerpanjangan($id)
 {
     $model = new \App\Models\PeminjamanModel();
+    $p = $model->find($id);
 
-    $peminjaman = $model->find($id);
-
-    if (!$peminjaman) {
+    if (!$p) {
         return redirect()->back()->with('error', 'Data tidak ditemukan');
     }
 
-    // tambah 3 hari
-    $tanggalBaru = date('Y-m-d', strtotime($peminjaman['tanggal_kembali'] . ' +3 days'));
-
     $model->update($id, [
-        'tanggal_kembali' => $tanggalBaru,
-        'perpanjangan' => $peminjaman['perpanjangan'] + 1,
+        'tanggal_kembali' => date('Y-m-d', strtotime($p['tanggal_kembali'] . ' +3 days')),
+        'perpanjangan' => $p['perpanjangan'] + 1,
         'status' => 'dipinjam'
     ]);
 
     return redirect()->back()->with('success', 'Perpanjangan disetujui');
 }
+
 public function tolakPerpanjangan($id)
 {
     $model = new \App\Models\PeminjamanModel();
 
     $model->update($id, [
-        'status' => 'dipinjam'
-    ]);
+    'status' => 'ditolak_perpanjangan'
+]);
 
     return redirect()->back()->with('success', 'Perpanjangan ditolak');
 }

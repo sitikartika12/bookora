@@ -15,7 +15,8 @@
         <li><a href="<?= base_url('/penerbit') ?>">Penerbit</a></li>
 
         <li><a href="<?= base_url('/pengiriman') ?>">Pengiriman</a></li>
-        <li><a href="<?= base_url('/penarikan') ?>">Penarikan</a></li>
+         <li><a href="<?= base_url('/transaksi') ?>">transaksi</a></li>
+
 
     <?php endif; ?>
 
