@@ -4,9 +4,7 @@
         <a href="<?= base_url('/') ?>">Dashboard</a>
     </li>
 
-    <!-- ======================
-         ADMIN & PETUGAS
-    ====================== -->
+    <!-- ADMIN & PETUGAS -->
     <?php if (in_array(session()->get('role'), ['admin', 'petugas'])) : ?>
 
         <li><a href="<?= base_url('/users') ?>">Users</a></li>
@@ -21,63 +19,61 @@
 
     <?php endif; ?>
 
-    <!-- ======================
-         ANGGOTA
-    ====================== -->
+    <!-- NOTIF DENDA -->
+    <?php if (session()->get('role') == 'petugas') : ?>
+
+        <?php
+        $db = \Config\Database::connect();
+        $notifDendaCount = $db->table('transaksi')
+            ->where('jenis', 'denda')
+            ->where('status', 'menunggu_verifikasi')
+            ->countAllResults();
+        ?>
+
+        <li>
+            <a href="<?= base_url('/transaksi/denda') ?>">
+                🚨 Denda
+                <?php if ($notifDendaCount > 0): ?>
+                    <span style="color:red;">(<?= $notifDendaCount ?>)</span>
+                <?php endif; ?>
+            </a>
+        </li>
+
+    <?php endif; ?>
+
+    <!-- ANGGOTA -->
     <?php if (session()->get('role') == 'anggota') : ?>
-
         <li><a href="<?= base_url('/buku') ?>">Buku</a></li>
-
-        <li>
-            <a href="<?= base_url('/anggota/profil') ?>">Lengkapi Profil</a>
-        </li>
-
+        <li><a href="<?= base_url('/anggota/profil') ?>">Profil</a></li>
     <?php endif; ?>
 
-    <!-- ======================
-         SEMUA ROLE
-    ====================== -->
+    <!-- UMUM -->
+    <li><a href="<?= base_url('/peminjaman') ?>">Peminjaman</a></li>
+    <li><a href="<?= base_url('/pengembalian') ?>">Pengembalian</a></li>
 
-    <li>
-        <a href="<?= base_url('/peminjaman') ?>">Peminjaman</a>
-    </li>
-
-    <li>
-        <a href="<?= base_url('/pengembalian') ?>">Pengembalian</a>
-    </li>
-
-    <!-- ❌ RAK DISEMBUNYIKAN DARI ANGGOTA -->
     <?php if (session()->get('role') != 'anggota') : ?>
-    <li>
-        <a href="<?= base_url('/rak') ?>">Rak</a>
-    </li>
+        <li><a href="<?= base_url('/rak') ?>">Rak</a></li>
     <?php endif; ?>
 
     <li>
-        <?php $idu = session('id'); ?>
-        <a href="<?= base_url('users/edit/' . $idu) ?>">Setting</a>
+        <a href="<?= base_url('users/edit/' . session('id')) ?>">Setting</a>
     </li>
 
-    <!-- ======================
-         BACKUP (ADMIN ONLY)
-    ====================== -->
     <?php if (session()->get('role') == 'admin') : ?>
-        <li>
-            <a href="<?= base_url('/backup') ?>">Backup Database</a>
-        </li>
+        <li><a href="<?= base_url('/backup') ?>">Backup</a></li>
     <?php endif; ?>
 
-    <li>
-        <a href="<?= base_url('/logout') ?>">Log Out</a>
-    </li>
+    <li><a href="<?= base_url('/logout') ?>">Logout</a></li>
 
 </ul>
 
 <br>
 
 Masuk sebagai:<br>
-<b><?= session('nama'); ?> (<?= session('role'); ?>)</b>
+<b><?= session('nama') ?> (<?= session('role') ?>)</b>
 
 <br><br>
 
-<img src="<?= base_url('uploads/users/' . session()->get('foto')) ?>" height="80">
+<?php if (!empty(session('foto'))): ?>
+    <img src="<?= base_url('uploads/users/' . session('foto')) ?>" height="80">
+<?php endif; ?>

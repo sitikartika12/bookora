@@ -14,6 +14,7 @@ class TransaksiModel extends Model
         'jenis',
         'jumlah',
         'status',
-        'metode_pembayaran'
+        'metode_pembayaran',
+        'bukti_pembayaran'
     ];
 }

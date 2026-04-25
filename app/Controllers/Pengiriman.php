@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\PengirimanModel;
+use App\Models\TransaksiModel;
 
 class Pengiriman extends BaseController
 {
@@ -38,22 +39,22 @@ class Pengiriman extends BaseController
     }
 
     // kirim
-    public function kirim($id)
-    {
-        $model = new PengirimanModel();
-        $modelpeminjaman = new \App\Models\PeminjamanModel();
+    public function kirim($id_transaksi)
+{
+    $transaksiModel = new TransaksiModel();
 
-        $model->update($id, [
-            'status' => 'dikirim',
-            'tanggal_kirim' => date('Y-m-d')
-        ]);
-        $modelpeminjaman->update($model->find($id)['id_peminjaman'], [
-            'id_petugas' => session()->get('id'),
-            'status' => 'dikirim'
-        ]);
+    $transaksi = $transaksiModel->find($id_transaksi);
+
+    if (!$transaksi) {
         return redirect()->back();
     }
 
+    $transaksiModel->update($id_transaksi, [
+        'status' => 'lunas'
+    ]);
+
+    return redirect()->back()->with('success', 'Pengiriman berhasil diverifikasi');
+}
     // sampai
     public function sampai($id)
     {

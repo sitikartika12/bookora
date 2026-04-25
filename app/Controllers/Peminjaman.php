@@ -19,26 +19,108 @@ class Peminjaman extends BaseController
     }
 
     // ================= LIST =================
-    public function index()
-    {
-        $role = session()->get('role');
-        $id   = session()->get('id');
+ public function index()
+{
+    $role = session()->get('role');
+    $id   = session()->get('id');
 
-        $query = $this->peminjaman
-            ->select('peminjaman.*, anggota.nama as nama_anggota, petugas.nama as nama_petugas')
-            ->join('users as anggota', 'anggota.id = peminjaman.id_anggota', 'left')
-            ->join('users as petugas', 'petugas.id = peminjaman.id_petugas', 'left')
-            ->orderBy('peminjaman.id_peminjaman', 'DESC');
+    $query = $this->peminjaman
+        ->select('
+            peminjaman.*,
+            anggota.nama as nama_anggota,
+            petugas.nama as nama_petugas
+        ')
+        ->join('users as anggota', 'anggota.id = peminjaman.id_anggota', 'left')
+        ->join('users as petugas', 'petugas.id = peminjaman.id_petugas', 'left')
+        ->orderBy('peminjaman.id_peminjaman', 'DESC');
 
-        if ($role == 'anggota') {
-            $query->where('peminjaman.id_anggota', $id);
-        }
-
-        $data['peminjaman'] = $query->findAll();
-
-        return view('peminjaman/index', $data);
+    if ($role == 'anggota') {
+        $query->where('peminjaman.id_anggota', $id);
     }
 
+    $data['peminjaman'] = $query->findAll();
+
+    $transaksiModel = new \App\Models\TransaksiModel();
+
+foreach ($data['peminjaman'] as &$p) {
+
+    $trx = $transaksiModel
+        ->where('id_peminjaman', $p['id_peminjaman'])
+        ->first();
+
+    $p['status_pembayaran']  = $trx['status'] ?? null;
+    $p['metode_pembayaran'] = $trx['metode_pembayaran'] ?? null;
+    $p['bukti_pembayaran']  = $trx['bukti_pembayaran'] ?? null;
+    $p['id_transaksi']      = $trx['id_transaksi'] ?? null;
+}
+
+    // =========================
+    // 🔔 NOTIFIKASI DENDA PETUGAS
+    // =========================
+    $data['notifDenda'] = [];
+
+    if ($role == 'petugas') {
+        $data['notifDenda'] = $transaksiModel
+            ->where('jenis', 'denda')
+            ->where('status', 'menunggu_verifikasi')
+            ->findAll();
+    }
+
+    // =========================
+    // HITUNG DENDA
+    // =========================
+    foreach ($data['peminjaman'] as &$p) {
+
+        $today = date('Y-m-d');
+
+        $p['status_display'] = $p['status'];
+        $p['denda'] = 0;
+        $p['status_denda'] = '-';
+
+        if (!empty($p['tanggal_kembali']) && $p['status'] != 'dikembalikan') {
+
+            if ($today > $p['tanggal_kembali']) {
+
+                $selisih = (strtotime($today) - strtotime($p['tanggal_kembali'])) / 86400;
+                $denda = $selisih * 1000;
+
+                $p['status_display'] = 'TELAT';
+                $p['denda'] = $denda;
+
+                // =========================
+                // CEK / INSERT DENDA
+                // =========================
+                $cek = $transaksiModel
+                    ->where('id_peminjaman', $p['id_peminjaman'])
+                    ->where('jenis', 'denda')
+                    ->first();
+
+                if (!$cek) {
+                    $transaksiModel->insert([
+                        'id_peminjaman' => $p['id_peminjaman'],
+                        'jenis' => 'denda',
+                        'jumlah' => $denda,
+                        'status' => 'menunggu_verifikasi',
+                        'metode_pembayaran' => null
+                    ]);
+
+                    $p['status_denda'] = 'menunggu_verifikasi';
+                } else {
+                    $p['status_denda'] = $cek['status'];
+                }
+
+            } else {
+                $p['status_denda'] = 'tidak_ada';
+            }
+
+        } else {
+            $p['status_denda'] = 'tidak_ada';
+        }
+    }
+
+    // ✅ INI YANG KAMU LUPA
+    return view('peminjaman/index', $data);
+}
     // ================= FORM =================
     public function create()
     {
@@ -92,11 +174,21 @@ class Peminjaman extends BaseController
         return redirect()->back()->with('error', 'Pilih metode peminjaman!');
     }
 
-    $biaya = ($metode == 'antar') ? 10000 : 0;
+    // ======================
+    // AMBIL DATA BUKU (PINDAH KE ATAS BIAR AMAN)
+    // ======================
+    $id_buku_list = $this->request->getPost('id_buku');
+    $jumlah_list  = $this->request->getPost('jumlah');
+
+    if (!$id_buku_list) {
+        return redirect()->back()->with('error', 'Pilih buku dulu!');
+    }
 
     // ======================
     // SIMPAN PEMINJAMAN
     // ======================
+    $biaya = ($metode == 'antar') ? 10000 : 0;
+
     $id_peminjaman = $peminjamanModel->insert([
         'id_anggota' => $userId,
         'id_petugas' => null,
@@ -112,11 +204,10 @@ class Peminjaman extends BaseController
     }
 
     // ======================
-    // JIKA ANTAR
+    // JIKA ANTAR → TRANSAKSI + PENGIRIMAN
     // ======================
     if ($metode == 'antar') {
 
-        // 1. SIMPAN PENGIRIMAN
         $pengirimanModel->insert([
             'id_peminjaman' => $id_peminjaman,
             'alamat' => $anggota['alamat'],
@@ -125,23 +216,12 @@ class Peminjaman extends BaseController
             'petugas_id' => null
         ]);
 
-        // 2. SIMPAN TRANSAKSI
         $transaksiModel->insert([
             'id_peminjaman' => $id_peminjaman,
             'jenis' => 'pengiriman',
             'jumlah' => $biaya,
             'status' => 'belum_bayar'
         ]);
-    }
-
-    // ======================
-    // AMBIL DATA BUKU
-    // ======================
-    $id_buku_list = $this->request->getPost('id_buku');
-    $jumlah_list  = $this->request->getPost('jumlah');
-
-    if (!$id_buku_list) {
-        return redirect()->back()->with('error', 'Pilih buku dulu!');
     }
 
     // ======================
@@ -175,57 +255,127 @@ class Peminjaman extends BaseController
         ->with('success', 'Peminjaman + transaksi berhasil dibuat');
 }
 
-public function ajukanKembali($id)
+    public function ajukanKembali($id_peminjaman)
 {
-    $model = new \App\Models\PeminjamanModel();
+    $peminjamanModel = new \App\Models\PeminjamanModel();
+    $transaksiModel  = new \App\Models\TransaksiModel();
 
-    $model->update($id, [
+    $peminjaman = $peminjamanModel->find($id_peminjaman);
+
+    if (!$peminjaman) {
+        return redirect()->back()->with('error', 'Data tidak ditemukan');
+    }
+
+    // CEK DENDA
+    $denda = $peminjaman['denda'] ?? 0;
+
+    if ($denda > 0) {
+
+        // cari transaksi denda
+        $transaksi = $transaksiModel
+            ->where('id_peminjaman', $id_peminjaman)
+            ->where('jenis', 'denda')
+            ->first();
+
+        if ($transaksi && $transaksi['status'] != 'lunas') {
+
+            // 🚨 paksa ke halaman bayar denda
+            return redirect()->to(
+                base_url('transaksi/bayar/'.$id_peminjaman.'/denda')
+            )->with('error', 'Harap selesaikan pembayaran denda terlebih dahulu');
+        }
+    }
+
+    // kalau tidak ada denda / sudah lunas
+    $peminjamanModel->update($id_peminjaman, [
         'status' => 'menunggu_pengembalian'
     ]);
 
-    return redirect()->back()->with('success', 'Menunggu konfirmasi petugas');
+    return redirect()->back()->with('success', 'Pengembalian diajukan');
 }
 
-public function konfirmasiKembali($id)
+  public function konfirmasiKembali($id)
 {
-    $model = new \App\Models\PeminjamanModel();
-    $detailModel = new \App\Models\DetailPeminjamanModel();
-    $bukuModel = new \App\Models\BukuModel();
+    $peminjamanModel = new \App\Models\PeminjamanModel();
+    $pengembalianModel = new \App\Models\PengembalianModel();
 
-    // ambil semua buku dari peminjaman
-    $detail = $detailModel
-        ->where('id_peminjaman', $id)
-        ->findAll();
+    $p = $peminjamanModel->find($id);
 
-    // kembalikan stok buku
-    foreach ($detail as $d) {
-        $buku = $bukuModel->find($d['id_buku']);
-
-        $bukuModel->update($d['id_buku'], [
-            'tersedia' => $buku['tersedia'] + $d['jumlah']
-        ]);
+    if (!$p) {
+        return redirect()->back();
     }
 
-    // update status
-    $model->update($id, [
+    // 1. update status peminjaman
+    $peminjamanModel->update($id, [
         'status' => 'dikembalikan'
     ]);
 
-    return redirect()->back()->with('success', 'Buku sudah dikembalikan');
+    // 2. INSERT ke tabel pengembalian
+    $pengembalianModel->insert([
+        'id_peminjaman' => $id,
+        'tanggal_kembali' => date('Y-m-d'),
+        'status' => 'selesai'
+    ]);
+
+    return redirect()->to('/pengembalian')
+        ->with('success', 'Buku berhasil dikembalikan');
 }
 
 
-public function bayar($id_peminjaman)
+  public function bayar($id_peminjaman, $jenis)
+{
+   $transaksiModel = new \App\Models\TransaksiModel();
+
+foreach ($data['peminjaman'] as &$p) {
+    $p['transaksi'] = $transaksiModel
+        ->where('id_peminjaman', $p['id_peminjaman'])
+        ->findAll();
+}
+    if (!$transaksi) {
+        return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
+    }
+
+    return view('transaksi/bayar', [
+        'transaksi' => $transaksi
+    ]);
+}
+
+public function proses()
 {
     $transaksiModel = new \App\Models\TransaksiModel();
 
-    $transaksi = $transaksiModel
-        ->where('id_peminjaman', $id_peminjaman)
-        ->first();
+    $id_transaksi = $this->request->getPost('id_transaksi');
+    $metode       = $this->request->getPost('metode');
 
-    return view('transaksi/bayar', ['transaksi' => $transaksi]);
+    $transaksi = $transaksiModel->find($id_transaksi);
+
+    if (!$transaksi) {
+        return redirect()->back()->with('error', 'Data tidak ditemukan');
+    }
+
+    // ❗ KHUSUS DENDA HANYA TRANSFER / CASH
+    if ($transaksi['jenis'] == 'denda') {
+
+        if (!in_array($metode, ['transfer', 'cash'])) {
+            return redirect()->back()->with('error', 'Metode denda hanya transfer atau cash');
+        }
+
+        $status = 'lunas';
+    }
+
+    // ❗ PENGIRIMAN
+    else {
+        $status = ($metode == 'cod') ? 'lunas' : 'menunggu_verifikasi';
+    }
+
+    $transaksiModel->update($id_transaksi, [
+        'metode_pembayaran' => $metode,
+        'status' => $status
+    ]);
+
+    return redirect()->to('/peminjaman')
+        ->with('success', 'Pembayaran berhasil');
 }
-
     // ================= DETAIL =================
     public function detail($id)
 {
@@ -235,19 +385,17 @@ public function bayar($id_peminjaman)
     // PEMINJAMAN
     // ========================
     $peminjaman = $db->table('peminjaman')
-        ->select('peminjaman.*, users.nama as nama_anggota, anggota.alamat, anggota.no_hp')
-        ->join('users', 'users.id = peminjaman.id_anggota')
-        ->join('anggota', 'anggota.user_id = peminjaman.id_anggota')
+        ->select('peminjaman.*, users.nama as nama_anggota')
+        ->join('users', 'users.id = peminjaman.id_anggota', 'left')
         ->where('peminjaman.id_peminjaman', $id)
         ->get()
         ->getRowArray();
 
-    // ========================
     // DETAIL BUKU
     // ========================
     $detail = $db->table('detail_peminjaman')
         ->select('detail_peminjaman.*, buku.judul')
-        ->join('buku', 'buku.id_buku = detail_peminjaman.id_buku')
+        ->join('buku', 'buku.id_buku = detail_peminjaman.id_buku', 'left')
         ->where('detail_peminjaman.id_peminjaman', $id)
         ->get()
         ->getResultArray();
@@ -258,7 +406,7 @@ public function bayar($id_peminjaman)
     $transaksi = $db->table('transaksi')
         ->where('id_peminjaman', $id)
         ->get()
-        ->getRowArray();
+        ->getResultArray();
 
     // ========================
     // PENARIKAN
@@ -281,95 +429,108 @@ public function bayar($id_peminjaman)
 
     // ================= KEMBALIKAN =================
     public function kembali($id)
-    {
-        $peminjamanModel = new \App\Models\PeminjamanModel();
-        $pengembalianModel = new \App\Models\PengembalianModel();
-        $detailModel = new \App\Models\DetailPeminjamanModel();
-        $bukuModel = new \App\Models\BukuModel();
+{
+    $peminjamanModel = new \App\Models\PeminjamanModel();
+    $pengembalianModel = new \App\Models\PengembalianModel();
 
-        // ambil data peminjaman
-        $pinjam = $peminjamanModel->find($id);
+    $pinjam = $peminjamanModel->find($id);
 
-        if (!$pinjam) {
-            return redirect()->back()->with('error', 'Data tidak ditemukan');
-        }
-
-        // =========================
-        // 1. SIMPAN KE PENGEMBALIAN OTOMATIS
-        // =========================
-        $today = date('Y-m-d');
-
-        $tanggal_kembali = (string) $pinjam['tanggal_kembali'];
-
-        $denda = 0;
-        if ($today > $tanggal_kembali) {
-            $selisih = (strtotime($today) - strtotime($tanggal_kembali)) / 86400;
-            $denda = $selisih * 1000;
-        }
-
-        $pengembalianModel->insert([
-            'id_peminjaman' => $id,
-            'tanggal_dikembalikan' => $today,
-            'denda' => $denda
-        ]);
-
-        // =========================
-        // 2. BALIKKAN STOK BUKU
-        // =========================
-        $detail = $detailModel->where('id_peminjaman', $id)->findAll();
-
-        foreach ($detail as $d) {
-            $buku = $bukuModel->find($d['id_buku']);
-
-            if ($buku) {
-                $bukuModel->update($d['id_buku'], [
-                    'tersedia' => $buku['tersedia'] + $d['jumlah']
-                ]);
-            }
-        }
-
-        // =========================
-        // 3. UPDATE PEMINJAMAN
-        // =========================
-        $peminjamanModel->update($id, [
-            'status' => 'dikembalikan',
-            'tanggal_kembali' => $today
-        ]);
-
-        return redirect()->to('/peminjaman')
-            ->with('success', 'Buku berhasil dikembalikan');
+    if (!$pinjam) {
+        return redirect()->back();
     }
+
+    $today = date('Y-m-d');
+
+    $denda = 0;
+
+    if ($today > $pinjam['tanggal_kembali']) {
+        $selisih = (strtotime($today) - strtotime($pinjam['tanggal_kembali'])) / 86400;
+        $denda = $selisih * 1000;
+    }
+
+    // SIMPAN PENGEMBALIAN
+    $pengembalianModel->insert([
+        'id_peminjaman' => $id,
+        'tanggal_dikembalikan' => $today,
+        'denda' => $denda
+    ]);
+
+    // UPDATE PEMINJAMAN
+    $peminjamanModel->update($id, [
+        'status' => 'dikembalikan',
+        'tanggal_kembali' => $today // opsional (kalau kamu mau overwrite)
+    ]);
+
+    return redirect()->to('/pengembalian');
+}
 
     public function perpanjang($id)
-    {
-        $peminjamanModel = new \App\Models\PeminjamanModel();
+{
+    $model = new \App\Models\PeminjamanModel();
 
-        $peminjaman = $peminjamanModel->find($id);
+    $peminjaman = $model->find($id);
 
-        if (!$peminjaman) {
-            return redirect()->back()->with('error', 'Data tidak ditemukan');
-        }
+    if (!$peminjaman) {
+        return redirect()->back()->with('error', 'Data tidak ditemukan');
+    }
 
-        // tidak boleh kalau sudah dikembalikan
-        if ($peminjaman['status'] == 'dikembalikan') {
-            return redirect()->back()->with('error', 'Buku sudah dikembalikan');
-        }
+    // ❌ sudah dikembalikan
+    if ($peminjaman['status'] == 'dikembalikan') {
+        return redirect()->back()->with('error', 'Buku sudah dikembalikan');
+    }
 
-        // tidak boleh lebih dari 1x
-        if ($peminjaman['perpanjangan'] >= 1) {
-            return redirect()->back()->with('error', 'Sudah pernah diperpanjang');
-        }
+    // ❌ LIMIT 2X PERPANJANG (INI WAJIB)
+    if ((int)$peminjaman['perpanjangan'] >= 2) {
 
-        // tambah 7 hari
-        $tanggalBaru = date('Y-m-d', strtotime($peminjaman['tanggal_kembali'] . ' +7 days'));
-
-        $peminjamanModel->update($id, [
-            'tanggal_kembali' => $tanggalBaru,
-            'perpanjangan' => $peminjaman['perpanjangan'] + 1
+        // update status biar jelas
+        $model->update($id, [
+            'status' => 'dipinjam'
         ]);
 
-        return redirect()->back()->with('success', 'Berhasil diperpanjang 7 hari');
+        return redirect()->back()
+            ->with('error', '❌ Tidak bisa perpanjang lagi, maksimal 2 kali');
     }
+
+    // kalau pakai sistem approval petugas
+    $model->update($id, [
+        'status' => 'menunggu_perpanjangan'
+    ]);
+
+    return redirect()->back()
+        ->with('success', 'Menunggu persetujuan petugas');
+}
+
+  public function setujuiPerpanjangan($id)
+{
+    $model = new \App\Models\PeminjamanModel();
+
+    $peminjaman = $model->find($id);
+
+    if (!$peminjaman) {
+        return redirect()->back()->with('error', 'Data tidak ditemukan');
+    }
+
+    // tambah 3 hari
+    $tanggalBaru = date('Y-m-d', strtotime($peminjaman['tanggal_kembali'] . ' +3 days'));
+
+    $model->update($id, [
+        'tanggal_kembali' => $tanggalBaru,
+        'perpanjangan' => $peminjaman['perpanjangan'] + 1,
+        'status' => 'dipinjam'
+    ]);
+
+    return redirect()->back()->with('success', 'Perpanjangan disetujui');
+}
+public function tolakPerpanjangan($id)
+{
+    $model = new \App\Models\PeminjamanModel();
+
+    $model->update($id, [
+        'status' => 'dipinjam'
+    ]);
+
+    return redirect()->back()->with('success', 'Perpanjangan ditolak');
+}
 
     public function ambil($id)
     {

@@ -63,6 +63,9 @@ $routes->get('peminjaman/ambil/(:num)', 'Peminjaman::ambil/$1');
 $routes->get('peminjaman/selesai/(:num)', 'Peminjaman::selesai/$1');
 $routes->get('peminjaman/ajukanKembali/(:num)', 'Peminjaman::ajukanKembali/$1');
 $routes->get('peminjaman/konfirmasiKembali/(:num)', 'Peminjaman::konfirmasiKembali/$1');
+$routes->get('peminjaman/setujuiPerpanjangan/(:num)', 'Peminjaman::setujuiPerpanjangan/$1');
+$routes->get('peminjaman/tolakPerpanjangan/(:num)', 'Peminjaman::tolakPerpanjangan/$1');
+
 // KATEGORI
 $routes->get('/kategori', 'Kategori::index');
 $routes->get('/kategori/create', 'Kategori::create');
@@ -110,6 +113,7 @@ $routes->get('pengiriman/sampai/(:num)', 'Pengiriman::sampai/$1');
 $routes->get('pengiriman', 'Pengiriman::index');
 $routes->get('pengiriman/saya', 'Pengiriman::saya');
 
+// Anggota
 $routes->post('anggota/store', 'Anggota::store');
 $routes->get('anggota/profil', 'Anggota::editProfil');
 $routes->post('anggota/updateProfil', 'Anggota::updateProfil');
@@ -128,6 +132,15 @@ $routes->get('penarikan/buatPenarikan/(:num)', 'Penarikan::buatPenarikan/$1');
 $routes->get('penarikan', 'Penarikan::index');
 $routes->get('penarikan/ambil/(:num)', 'Penarikan::ambil/$1');
 
-//transaksi
+// TRANSAKSI
 $routes->get('transaksi/bayar/(:num)', 'Transaksi::bayar/$1');
+$routes->get('transaksi/bayar/(:num)/(:segment)', 'Transaksi::bayar/$1/$2');
 $routes->post('transaksi/proses', 'Transaksi::proses');
+
+$routes->get('transaksi/verifikasi/(:num)', 'Transaksi::verifikasi/$1');
+$routes->get('transaksi/tolak/(:num)', 'Transaksi::tolak/$1');
+$routes->get('transaksi/denda', 'Transaksi::denda');
+$routes->get('transaksi/denda/(:num)', 'Transaksi::bayar/$1/denda');
+$routes->post('transaksi/denda/proses', 'Transaksi::prosesDenda');
+$routes->get('transaksi/proses/(:num)/(:segment)', 'Transaksi::proses/$1/$2');
+

@@ -11,7 +11,7 @@
         <td>Nama Anggota</td>
         <td><?= $peminjaman['nama_anggota'] ?></td>
     </tr>
-
+    
     <tr>
         <td>Tanggal Pinjam</td>
         <td><?= $peminjaman['tanggal_pinjam'] ?></td>
@@ -26,7 +26,7 @@
         <td>Alamat</td>
         <td><?= $peminjaman['alamat'] ?? '-' ?></td>
     </tr>
-
+    
     <tr>
         <td>No HP</td>
         <td><?= $peminjaman['no_hp'] ?? '-' ?></td>
@@ -36,72 +36,78 @@
         <td>Status</td>
         <td><?= $peminjaman['status'] ?></td>
     </tr>
-
-    <tr>
-    <td>Status Pembayaran</td>
-    <td>
-        <?php if ($transaksi): ?>
-            <?php if ($transaksi['status'] == 'lunas'): ?>
-                <span style="color:green; font-weight:bold;">LUNAS</span>
-            <?php elseif ($transaksi['status'] == 'belum_bayar'): ?>
-                <span style="color:red; font-weight:bold;">BELUM BAYAR</span>
-            <?php else: ?>
-                <?= $transaksi['status'] ?>
-            <?php endif; ?>
-        <?php else: ?>
-            -
-        <?php endif; ?>
-    </td>
-</tr>
-
-<tr>
-    <td>Total Pembayaran</td>
-    <td>
-        Rp <?= number_format($transaksi['jumlah'] ?? 0, 0, ',', '.') ?>
-    </td>
-</tr>
-
-<tr>
-    <td>Metode Pembayaran</td>
-    <td>
-        <?= $transaksi['metode'] ?? '-' ?>
-    </td>
-</tr>
 </table>
 
 <br>
 
+<h4>Pembayaran</h4>
 
+<?php if (!empty($transaksi)): ?>
+    <?php foreach ($transaksi as $t): ?>
+
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+
+            <b><?= strtoupper($t['jenis']) ?></b><br>
+            Rp <?= number_format($t['jumlah'], 0, ',', '.') ?><br>
+
+            Status:
+            <span style="color:<?= $t['status']=='lunas'?'green':'red' ?>">
+                <?= $t['status'] ?>
+            </span><br>
+
+            Metode: <?= $t['metode_pembayaran'] ?? '-' ?><br>
+
+            <?php if ($t['status'] != 'lunas'): ?>
+
+                <?php if ($t['jenis'] == 'denda'): ?>
+                    <a href="<?= base_url('transaksi/bayar/'.$peminjaman['id_peminjaman'].'/denda') ?>">
+                        💰 Bayar Denda
+                    </a>
+                <?php endif; ?>
+
+                <?php if ($t['jenis'] == 'pengiriman'): ?>
+                    <a href="<?= base_url('transaksi/bayar/'.$peminjaman['id_peminjaman'].'/pengiriman') ?>">
+                        🚚 Bayar Pengiriman
+                    </a>
+                <?php endif; ?>
+
+            <?php endif; ?>
+
+        </div>
+
+    <?php endforeach; ?>
+<?php else: ?>
+    Tidak ada transaksi
+<?php endif; ?>
+
+<br>
 
 <?php if ($penarikan): ?>
-    <p>Status Penarikan: <b><?= $penarikan['status'] ?></b></p>
+    Status Penarikan: <b><?= $penarikan['status'] ?></b><br>
 <?php endif; ?>
 
 
 <?php if ($penarikan && session()->get('role') == 'petugas'): ?>
-    <a href="<?= base_url('penarikan/ambil/' . $penarikan['id_penarikan']) ?>">
+    <a href="<?= base_url('penarikan/ambil/'.$penarikan['id_penarikan']) ?>">
         Ambil
     </a>
 <?php endif; ?>
-<!-- ========================
-     DETAIL BUKU
-======================== -->
+
 <h4>Daftar Buku</h4>
 
-<table border="1" cellpadding="5">
+<table border="1">
     <tr>
         <th>No</th>
-        <th>Judul Buku</th>
+        <th>Judul</th>
         <th>Jumlah</th>
     </tr>
 
-    <?php $no = 1;
-    foreach ($detail as $d): ?>
-        <tr>
-            <td><?= $no++ ?></td>
-            <td><?= $d['judul'] ?></td>
-            <td><?= $d['jumlah'] ?></td>
-        </tr>
+    <?php $no=1; foreach ($detail as $d): ?>
+    <tr>
+        <td><?= $no++ ?></td>
+        <td><?= $d['judul'] ?></td>
+        <td><?= $d['jumlah'] ?></td>
+    </tr>
     <?php endforeach; ?>
 
 </table>
