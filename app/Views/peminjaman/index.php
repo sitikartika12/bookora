@@ -127,6 +127,15 @@
                                 <!-- ANGGOTA -->
                                 <?php if (session()->get('role') == 'anggota') : ?>
 
+                                    <?php if (($p['status'] ?? '') == 'dipinjam') : ?>
+        <a href="<?= base_url('peminjaman/kembali/'.$p['id_peminjaman']) ?>"
+           class="btn btn-sm btn-success"
+           onclick="return confirm('Kembalikan buku ini?')">
+            Kembalikan
+        </a>
+    <?php endif; ?>
+
+
                                     <?php if ($p['metode']=='antar' && $p['status']=='menunggu_pembayaran'): ?>
                                         <a href="<?= base_url('transaksi/pilihMetode/'.$p['id_peminjaman']) ?>"
                                            class="btn btn-sm btn-success">
@@ -135,16 +144,20 @@
                                     <?php endif; ?>
 
 
-                                    <a href="<?= base_url('peminjaman/delete/'.$p['id_peminjaman']) ?>"
-                                       onclick="return confirm('Hapus?')"
-                                       class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
-
                                 <?php endif; ?>
 
                                 <!-- PETUGAS -->
                                 <?php if (session()->get('role') == 'petugas'): ?>
+
+                                     <?php if (($p['status'] ?? '') == 'menunggu_pengembalian') : ?>
+        <a href="<?= base_url('peminjaman/kembali/'.$p['id_peminjaman']) ?>"
+           class="btn btn-sm btn-warning"
+           onclick="return confirm('Verifikasi pengembalian?')">
+            ✔ Verifikasi Pengembalian
+        </a>
+    <?php endif; ?>
+
+
 
                                     <?php if ($p['status_pembayaran'] == 'menunggu_verifikasi'): ?>
                                             

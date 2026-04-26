@@ -492,38 +492,34 @@ public function verifikasi($id)
     // ================= KEMBALIKAN =================
     public function kembali($id)
 {
-    $peminjamanModel = new \App\Models\PeminjamanModel();
-    $pengembalianModel = new \App\Models\PengembalianModel();
+    $model = new \App\Models\PeminjamanModel();
 
-    $pinjam = $peminjamanModel->find($id);
+    $p = $model->find($id);
 
-    if (!$pinjam) {
-        return redirect()->back();
+    if (!$p) {
+        return redirect()->back()->with('error', 'Data tidak ditemukan');
     }
 
-    $today = date('Y-m-d');
+    // anggota request pengembalian
+    if (session()->get('role') == 'anggota') {
 
-    $denda = 0;
+        $model->update($id, [
+            'status' => 'menunggu_pengembalian'
+        ]);
 
-    if ($today > $pinjam['tanggal_kembali']) {
-        $selisih = (strtotime($today) - strtotime($pinjam['tanggal_kembali'])) / 86400;
-        $denda = $selisih * 1000;
+        return redirect()->back()->with('success', 'Pengembalian diajukan');
     }
 
-    // SIMPAN PENGEMBALIAN
-    $pengembalianModel->insert([
-        'id_peminjaman' => $id,
-        'tanggal_dikembalikan' => $today,
-        'denda' => $denda
-    ]);
+    // petugas verifikasi
+    if (session()->get('role') == 'petugas') {
 
-    // UPDATE PEMINJAMAN
-    $peminjamanModel->update($id, [
-        'status' => 'dikembalikan',
-        'tanggal_kembali' => $today // opsional (kalau kamu mau overwrite)
-    ]);
+        $model->update($id, [
+            'status' => 'dikembalikan',
+            'tanggal_dikembalikan' => date('Y-m-d')
+        ]);
 
-    return redirect()->to('/pengembalian');
+        return redirect()->back()->with('success', 'Pengembalian berhasil diverifikasi');
+    }
 }
 
     public function perpanjang($id)
