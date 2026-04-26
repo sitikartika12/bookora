@@ -31,13 +31,13 @@
                 <div class="col-md-4">
                     <div class="mini-card highlight">
                         <small>Dikembalikan</small>
-                        <h6>Rp 0</h6>
+                        <h6>Rp 23jt</h6>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mini-card">
                         <small>Sisa</small>
-                        <h6>Rp 0</h6>
+                        <h6>Rp 39jt</h6>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
             <div class="card custom-card mb-4 gradient-card text-white">
                 <div class="card-body">
                     <h6>Kesehatan Sistem</h6>
-                    <h2>0%</h2>
+                    <h2>85%</h2>
                     <small>Stabil</small>
                 </div>
             </div>
@@ -85,7 +85,7 @@
                 <tr>
                     <td>Denda</td>
                     <td class="text-warning">Pending</td>
-                    <td class="text-end">Rp 0</td>
+                    <td class="text-end">Rp 50.000</td>
                 </tr>
             </table>
         </div>
