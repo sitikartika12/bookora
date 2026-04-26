@@ -1,50 +1,100 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<div>
+<style>
+.profile-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    padding: 25px;
+}
 
-    <h3>Detail User</h3>
+.avatar {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #dee2e6;
+}
 
-    <table border="1" cellpadding="5" cellspacing="0">
-        <tr>
-            <td>Nama</td>
-            <td><?= $user['nama'] ?></td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td><?= $user['email'] ?></td>
-        </tr>
-        <tr>
-            <td>Username</td>
-            <td><?= $user['username'] ?></td>
-        </tr>
-        <tr>
-            <td>password</td>
-            <td>***</td>
-        </tr>
-        <tr>
-            <td>Role</td>
-            <td><?= ucfirst($user['role']) ?></td>
-        </tr>
-        <tr>
-            <td>Foto</td>
-            <td>
-                <?php if ($user['foto']): ?>
-                    <img src="<?= base_url('uploads/users/' . $user['foto']) ?>" width="100">
-                <?php else: ?>
-                    -
-                <?php endif; ?>
-            </td>
-        </tr>
-    </table>
+.label-title {
+    width: 150px;
+    font-weight: 600;
+    color: #555;
+}
 
-    <br>
+.value-text {
+    color: #333;
+}
+</style>
 
-    <a href="<?= base_url('users') ?>">Kembali</a>
+<div class="container">
 
-    <?php if (session()->get('role') == 'admin') : ?>
-        <a href="<?= base_url('users/edit/' . $user['id']) ?>">Edit</a>
-    <?php endif; ?>
+    <h4 class="fw-bold mb-3">Detail User</h4>
+
+    <div class="profile-card">
+
+        <div class="text-center mb-4">
+
+            <?php if (!empty($user['foto'])): ?>
+                <img src="<?= base_url('uploads/users/' . $user['foto']) ?>" class="avatar">
+            <?php else: ?>
+                <img src="<?= base_url('assets/default-user.png') ?>" class="avatar">
+            <?php endif; ?>
+
+            <h5 class="mt-2"><?= $user['nama'] ?></h5>
+            <span class="badge bg-dark"><?= ucfirst($user['role']) ?></span>
+
+        </div>
+
+        <hr>
+
+        <table class="table table-borderless">
+
+            <tr>
+                <td class="label-title">Nama</td>
+                <td class="value-text"><?= $user['nama'] ?></td>
+            </tr>
+
+            <tr>
+                <td class="label-title">Email</td>
+                <td class="value-text"><?= $user['email'] ?></td>
+            </tr>
+
+            <tr>
+                <td class="label-title">Username</td>
+                <td class="value-text"><?= $user['username'] ?></td>
+            </tr>
+
+            <tr>
+                <td class="label-title">Password</td>
+                <td class="value-text">••••••••</td>
+            </tr>
+
+            <tr>
+                <td class="label-title">Role</td>
+                <td class="value-text"><?= ucfirst($user['role']) ?></td>
+            </tr>
+
+        </table>
+
+        <hr>
+
+        <div class="d-flex gap-2">
+
+            <a href="<?= base_url('users') ?>" class="btn btn-outline-secondary">
+                Kembali
+            </a>
+
+            <?php if (session()->get('role') == 'admin') : ?>
+                <a href="<?= base_url('users/edit/' . $user['id']) ?>" class="btn btn-dark">
+                    Edit User
+                </a>
+            <?php endif; ?>
+
+        </div>
+
+    </div>
 
 </div>
 

@@ -1,53 +1,124 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<h3>Data Penerbit</h3>
+<style>
+.table-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
 
-<form method="get">
-    <input type="text" name="keyword" placeholder="Cari penerbit..."
-        value="<?= $_GET['keyword'] ?? '' ?>">
-    <button type="submit">Cari</button>
-    <a href="<?= base_url('penerbit') ?>">Reset</a>
-</form>
+.btn-custom {
+    border-radius: 20px;
+    padding: 5px 12px;
+}
+</style>
 
-<br>
+<div class="container">
 
-<a href="<?= base_url('penerbit/create') ?>">+ Tambah</a>
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="fw-bold mb-0">Data Penerbit</h4>
+            <small class="text-muted">Daftar penerbit buku</small>
+        </div>
 
-<table border="1">
-<tr>
-    <th>No</th>
-    <th>Nama</th>
-    <th>Aksi</th>
-</tr>
+        <a href="<?= base_url('penerbit/create') ?>" class="btn btn-dark btn-custom">
+            <i class="bi bi-plus"></i> Tambah
+        </a>
+    </div>
 
-<?php if (!empty($penerbit)) : ?>
+    <div class="table-card">
 
-    <?php $no=1; foreach($penerbit as $p): ?>
-    <tr>
-        <td><?= $no++ ?></td>
-        <td><?= $p['nama_penerbit'] ?></td>
-        <td>
-            <a href="<?= base_url('penerbit/edit/'.$p['id_penerbit']) ?>">Edit</a>
-            <a href="<?= base_url('penerbit/delete/'.$p['id_penerbit']) ?>">Hapus</a>
-        </td>
-    </tr>
-    <?php endforeach; ?>
+        <!-- SEARCH -->
+        <form method="get" class="row g-2 mb-3">
 
-<?php else : ?>
+            <div class="col-md-4">
+                <input type="text"
+                       name="keyword"
+                       class="form-control"
+                       placeholder="Cari penerbit..."
+                       value="<?= $_GET['keyword'] ?? '' ?>">
+            </div>
 
-    <tr>
-        <td colspan="3">
-            <?php if (!empty($_GET['keyword'])) : ?>
-                Data penerbit "<?= $_GET['keyword'] ?>" tidak ditemukan
-            <?php else : ?>
-                Belum ada data penerbit
-            <?php endif; ?>
-        </td>
-    </tr>
+            <div class="col-auto">
+                <button class="btn btn-primary btn-custom">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
 
-<?php endif; ?>
+            <div class="col-auto">
+                <a href="<?= base_url('penerbit') ?>" class="btn btn-light btn-custom">
+                    Reset
+                </a>
+            </div>
 
-</table>
+        </form>
+
+        <!-- TABLE -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th width="60">No</th>
+                        <th>Nama Penerbit</th>
+                        <th width="150">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php if (!empty($penerbit)) : ?>
+                        <?php $no=1; foreach($penerbit as $p): ?>
+
+                        <tr>
+                            <td><?= $no++ ?></td>
+
+                            <td><?= $p['nama_penerbit'] ?></td>
+
+                            <td>
+                                <div class="d-flex gap-1">
+
+                                    <a href="<?= base_url('penerbit/edit/'.$p['id_penerbit']) ?>"
+                                       class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+
+                                    <a href="<?= base_url('penerbit/delete/'.$p['id_penerbit']) ?>"
+                                       onclick="return confirm('Hapus data?')"
+                                       class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+
+                                </div>
+                            </td>
+                        </tr>
+
+                        <?php endforeach; ?>
+
+                    <?php else : ?>
+
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">
+
+                                <?php if (!empty($_GET['keyword'])) : ?>
+                                    Data "<b><?= $_GET['keyword'] ?></b>" tidak ditemukan
+                                <?php else : ?>
+                                    Belum ada data penerbit
+                                <?php endif; ?>
+
+                            </td>
+                        </tr>
+
+                    <?php endif; ?>
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
 
 <?= $this->endSection() ?>

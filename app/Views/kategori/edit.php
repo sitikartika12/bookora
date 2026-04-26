@@ -1,15 +1,64 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<h3>Edit Kategori</h3>
+<style>
+.form-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
 
-<form action="<?= base_url('kategori/update/'.$kategori['id_kategori']) ?>" method="post">
+.form-control {
+    border-radius: 12px;
+    padding: 10px;
+}
 
-    <label>Nama Kategori</label><br>
-    <input type="text" name="nama_kategori" value="<?= $kategori['nama_kategori'] ?>">
+.btn-custom {
+    border-radius: 20px;
+    padding: 8px 18px;
+}
 
-    <br><br>
-    <button type="submit">Update</button>
+.form-label {
+    font-weight: 500;
+}
+</style>
 
-</form>
+<div class="container">
+
+    <!-- TITLE -->
+    <div class="mb-4">
+        <h4 class="fw-bold">Edit Kategori</h4>
+        <small class="text-muted">Perbarui data kategori</small>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-card">
+
+        <form action="<?= base_url('kategori/update/'.$kategori['id_kategori']) ?>" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Nama Kategori</label>
+                <input type="text" name="nama_kategori"
+                       class="form-control"
+                       value="<?= $kategori['nama_kategori'] ?>"
+                       required>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-dark btn-custom">
+                    <i class="bi bi-save"></i> Update
+                </button>
+
+                <a href="<?= base_url('kategori') ?>" class="btn btn-light btn-custom">
+                    <i class="bi bi-arrow-left"></i> Kembali
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
 <?= $this->endSection() ?>

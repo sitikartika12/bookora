@@ -1,86 +1,136 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<h3>Detail Buku</h3>
+<style>
+.detail-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
 
-<table border="1" cellpadding="5">
+.label {
+    font-size: 13px;
+    color: #888;
+}
 
-    <tr>
-        <td>Cover</td>
-        <td>
-            <?php if ($buku['cover']): ?>
-                <img src="<?= base_url('uploads/buku/' . $buku['cover']) ?>" width="120">
-            <?php else: ?>
-                -
-            <?php endif; ?>
-        </td>
-    </tr>
+.value {
+    font-weight: 500;
+}
 
-    <tr>
-        <td>Judul</td>
-        <td><?= $buku['judul'] ?></td>
-    </tr>
+.cover-img {
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    object-fit: cover;
+}
+</style>
 
-    <tr>
-        <td>ISBN</td>
-        <td><?= $buku['isbn'] ?></td>
-    </tr>
+<div class="container">
 
-    <tr>
-        <td>Kategori</td>
-        <td><?= $buku['nama_kategori'] ?? '-' ?></td>
-    </tr>
+    <!-- TITLE -->
+    <div class="mb-4">
+        <h4 class="fw-bold">Detail Buku</h4>
+        <small class="text-muted">Informasi lengkap buku</small>
+    </div>
 
-    <tr>
-        <td>Penulis</td>
-        <td><?= $buku['nama_penulis'] ?? '-' ?></td>
-    </tr>
+    <div class="detail-card">
 
-    <tr>
-        <td>Penerbit</td>
-        <td><?= $buku['nama_penerbit'] ?? '-' ?></td>
-    </tr>
+        <div class="row">
 
-    <tr>
-        <td>Rak</td>
-        <td><?= $buku['nama_rak'] ?> - <?= $buku['lokasi'] ?></td>
-    </tr>
+            <!-- COVER -->
+            <div class="col-md-4 text-center mb-3">
+                <?php if ($buku['cover']): ?>
+                    <img src="<?= base_url('uploads/buku/' . $buku['cover']) ?>" 
+                         class="cover-img" width="180">
+                <?php else: ?>
+                    <div class="text-muted">Tidak ada cover</div>
+                <?php endif; ?>
+            </div>
 
-<tr>
-    <td>Lokasi</td>
-    <td><?= $buku['lokasi'] ?? '-' ?></td>
-</tr>
+            <!-- DETAIL -->
+            <div class="col-md-8">
 
-    <tr>
-        <td>Tahun Terbit</td>
-        <td><?= $buku['tahun_terbit'] ?></td>
-    </tr>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="label">Judul</div>
+                        <div class="value"><?= $buku['judul'] ?></div>
+                    </div>
 
-    <tr>
-        <td>Jumlah</td>
-        <td><?= $buku['jumlah'] ?></td>
-    </tr>
+                    <div class="col-md-6">
+                        <div class="label">ISBN</div>
+                        <div class="value"><?= $buku['isbn'] ?: '-' ?></div>
+                    </div>
+                </div>
 
-    <tr>
-        <td>Tersedia</td>
-        <td><?= $buku['tersedia'] ?></td>
-    </tr>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="label">Kategori</div>
+                        <div class="value"><?= $buku['nama_kategori'] ?? '-' ?></div>
+                    </div>
 
-    <tr>
-        <td>Deskripsi</td>
-        <td><?= $buku['deskripsi'] ?></td>
-    </tr>
+                    <div class="col-md-6">
+                        <div class="label">Penulis</div>
+                        <div class="value"><?= $buku['nama_penulis'] ?? '-' ?></div>
+                    </div>
+                </div>
 
-    <tr>
-        <td>Dibuat</td>
-        <td><?= $buku['created_at'] ?></td>
-    </tr>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="label">Penerbit</div>
+                        <div class="value"><?= $buku['nama_penerbit'] ?? '-' ?></div>
+                    </div>
 
-</table>
+                    <div class="col-md-6">
+                        <div class="label">Rak</div>
+                        <div class="value"><?= $buku['nama_rak'] ?> - <?= $buku['lokasi'] ?></div>
+                    </div>
+                </div>
 
-<br>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="label">Tahun</div>
+                        <div class="value"><?= $buku['tahun_terbit'] ?></div>
+                    </div>
 
-<a href="<?= base_url('buku') ?>">Kembali</a>
-<a href="<?= base_url('buku/wa/' . $buku['id_buku']) ?>" target="_blank">Kirim WA</a>
+                    <div class="col-md-4">
+                        <div class="label">Jumlah</div>
+                        <div class="value"><?= $buku['jumlah'] ?></div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="label">Tersedia</div>
+                        <div class="value"><?= $buku['tersedia'] ?></div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="label">Deskripsi</div>
+                    <div class="value"><?= $buku['deskripsi'] ?: '-' ?></div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="label">Dibuat</div>
+                    <div class="value"><?= $buku['created_at'] ?></div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BUTTON -->
+        <div class="d-flex gap-2 mt-3">
+            <a href="<?= base_url('buku') ?>" class="btn btn-light rounded-pill">
+                <i class="bi bi-arrow-left"></i> Kembali
+            </a>
+
+            <a href="<?= base_url('buku/wa/' . $buku['id_buku']) ?>" target="_blank"
+               class="btn btn-success rounded-pill">
+                <i class="bi bi-whatsapp"></i> Kirim WA
+            </a>
+        </div>
+
+    </div>
+
+</div>
 
 <?= $this->endSection() ?>

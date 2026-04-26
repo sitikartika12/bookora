@@ -1,52 +1,123 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<h3>Data Penulis</h3>
+<style>
+.table-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
 
-<form method="get">
-    <input type="text" name="keyword" placeholder="Cari penulis..."
-        value="<?= $_GET['keyword'] ?? '' ?>">
-    <button type="submit">Cari</button>
-    <a href="<?= base_url('penulis') ?>">Reset</a>
-</form>
+.btn-custom {
+    border-radius: 20px;
+    padding: 5px 12px;
+}
+</style>
 
-<br>
+<div class="container">
 
-<a href="<?= base_url('penulis/create') ?>">+ Tambah</a>
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="fw-bold mb-0">Data Penulis</h4>
+            <small class="text-muted">Manajemen data penulis</small>
+        </div>
 
+        <a href="<?= base_url('penulis/create') ?>" class="btn btn-dark btn-custom">
+            <i class="bi bi-plus"></i> Tambah
+        </a>
+    </div>
 
-<table border="1">
-<tr>
-    <th>No</th>
-    <th>Nama</th>
-    <th>Aksi</th>
-</tr>
+    <div class="table-card">
 
-<?php if (!empty($penulis)) : ?>
+        <!-- SEARCH -->
+        <form method="get" class="row g-2 mb-3">
+            <div class="col-md-4">
+                <input type="text" name="keyword" class="form-control"
+                       placeholder="Cari penulis..."
+                       value="<?= $_GET['keyword'] ?? '' ?>">
+            </div>
 
-    <?php $no=1; foreach($penulis as $p): ?>
-    <tr>
-        <td><?= $no++ ?></td>
-        <td><?= $p['nama_penulis'] ?></td>
-        <td>
-            <a href="<?= base_url('penulis/edit/'.$p['id_penulis']) ?>">Edit</a>
-            <a href="<?= base_url('penulis/delete/'.$p['id_penulis']) ?>">Hapus</a>
-        </td>
-    </tr>
-    <?php endforeach; ?>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary btn-custom">
+                    <i class="bi bi-search"></i>
+                </button>
+                <a href="<?= base_url('penulis') ?>" class="btn btn-outline-secondary btn-custom">
+                    Reset
+                </a>
+            </div>
+        </form>
 
-<?php else : ?>
+        <!-- TABLE -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
 
-    <tr>
-        <td colspan="3">
-            <?php if (!empty($_GET['keyword'])) : ?>
-                Data penulis "<?= $_GET['keyword'] ?>" tidak ditemukan
-            <?php else : ?>
-                Belum ada data penulis
-            <?php endif; ?>
-        </td>
-    </tr>
+                <thead>
+                    <tr>
+                        <th width="60">No</th>
+                        <th>Nama Penulis</th>
+                        <th width="180">Aksi</th>
+                    </tr>
+                </thead>
 
-<?php endif; ?>
-</table>
+                <tbody>
+
+                    <?php if (!empty($penulis)) : ?>
+                        <?php $no=1; foreach($penulis as $p): ?>
+
+                        <tr>
+                            <td><?= $no++ ?></td>
+
+                            <td>
+                                <span class="fw-semibold">
+                                    <?= $p['nama_penulis'] ?>
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="d-flex gap-1">
+
+                                    <a href="<?= base_url('penulis/edit/'.$p['id_penulis']) ?>"
+                                       class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+
+                                    <a href="<?= base_url('penulis/delete/'.$p['id_penulis']) ?>"
+                                       onclick="return confirm('Hapus penulis ini?')"
+                                       class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+
+                                </div>
+                            </td>
+                        </tr>
+
+                        <?php endforeach; ?>
+
+                    <?php else : ?>
+
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">
+
+                                <?php if (!empty($_GET['keyword'])) : ?>
+                                    Data penulis "<?= $_GET['keyword'] ?>" tidak ditemukan
+                                <?php else : ?>
+                                    Belum ada data penulis
+                                <?php endif; ?>
+
+                            </td>
+                        </tr>
+
+                    <?php endif; ?>
+
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
 <?= $this->endSection() ?>

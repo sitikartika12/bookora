@@ -1,18 +1,56 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Tambah penerbit</title>
+<style>
+.form-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    max-width: 500px;
+}
 
-    <link href="<?= base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
-</head>
+.btn-custom {
+    border-radius: 20px;
+    padding: 6px 15px;
+}
+</style>
 
-<h3>Tambah Penerbit</h3>
+<div class="container">
 
-<form action="<?= base_url('penerbit/store') ?>" method="post">
-    <input type="text" name="nama_penerbit" placeholder="Nama penerbit">
-    <button type="submit">Simpan</button>
-</form>
+    <!-- TITLE -->
+    <div class="mb-4">
+        <h4 class="fw-bold">Tambah Penerbit</h4>
+        <small class="text-muted">Input data penerbit baru</small>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-card">
+
+        <form action="<?= base_url('penerbit/store') ?>" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Nama Penerbit</label>
+                <input type="text" name="nama_penerbit"
+                       class="form-control"
+                       placeholder="Masukkan nama penerbit"
+                       required>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-dark btn-custom">
+                    <i class="bi bi-save"></i> Simpan
+                </button>
+
+                <a href="<?= base_url('penerbit') ?>" class="btn btn-light btn-custom">
+                    <i class="bi bi-arrow-left"></i> Kembali
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 
 <?= $this->endSection() ?>

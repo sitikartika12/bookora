@@ -34,7 +34,7 @@ class Pengembalian extends BaseController
     // 🔥 INSERT PENGEMBALIAN
     $result = $pengembalianModel->insert([
         'id_peminjaman' => $id,
-        'tanggal_dikembalikan' => $today,
+        'tanggal_kembali' => $today,
         'denda' => $denda
     ]);
 
