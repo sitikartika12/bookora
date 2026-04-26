@@ -45,6 +45,22 @@ class Petugas extends BaseController
         return redirect()->to('/petugas');
     }
 
+
+    public function verifikasi($id_transaksi, $id_peminjaman)
+{
+    $transaksiModel = new TransaksiModel();
+    $peminjamanModel = new PeminjamanModel();
+
+    // transaksi lunas
+    $transaksiModel->update($id_transaksi, [
+        'status' => 'lunas'
+    ]);
+
+    // peminjaman lanjut proses
+    $peminjamanModel->update($id_peminjaman, [
+        'status' => 'antar'
+    ]);
+}
     // DELETE
     public function delete($id)
     {

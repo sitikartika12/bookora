@@ -29,7 +29,17 @@
             <td><?= $p['metode'] ?></td>
             <td><?= $p['tanggal_pinjam'] ?></td>
             <td><?= $p['tanggal_kembali'] ?></td>
-            <td><?= $p['status'] ?></td>
+            <td>
+    <?php if ($p['status'] == 'diproses'): ?>
+        <span style="color:blue;">diproses</span>
+    <?php elseif ($p['status'] == 'diantar'): ?>
+        <span style="color:orange;">diantar</span>
+    <?php elseif ($p['status'] == 'dipinjam'): ?>
+        <span style="color:green;">dipinjam</span>
+    <?php else: ?>
+        <?= $p['status'] ?>
+    <?php endif; ?>
+</td>
 
             <!-- PEMBAYARAN -->
             <td>
@@ -39,7 +49,7 @@
                     Status: <?= $p['status'] ?><br>
                 <?php endif; ?>
 
-                <?php if ($p['status_denda'] != 'tidak_ada'): ?>
+                <?php if (!empty($p['status_denda']) && $p['status_denda'] != 'tidak_ada'): ?>
                     <br><b>Denda:</b><br>
                     Rp <?= number_format($p['denda'], 0, ',', '.') ?><br>
                     Status: <?= $p['status_denda'] ?><br>
@@ -63,111 +73,106 @@
             <!-- AKSI -->
             <td>
 
-                <!-- DETAIL -->
-                <a href="<?= base_url('peminjaman/detail/' . $p['id_peminjaman']) ?>">Detail</a>
+    <!-- DETAIL -->
+    <a href="<?= base_url('peminjaman/detail/' . $p['id_peminjaman']) ?>">Detail</a>
 
-                <!-- ANGGOTA -->
-                <?php if (session()->get('role') == 'anggota') : ?>
+    <!-- ================= ANGGOTA ================= -->
+    <?php if (session()->get('role') == 'anggota') : ?>
 
-                    <?php if ($p['status'] == 'dipinjam' || $p['status'] == 'diperpanjang'): ?>
-    <a href="<?= base_url('peminjaman/ajukanKembali/' . $p['id_peminjaman']) ?>">
-        Ajukan Pengembalian
-    </a>
-<?php endif; ?>
+        <!-- AJUKAN PENGEMBALIAN -->
+        <?php if (in_array($p['status'], ['dipinjam', 'diperpanjang'])): ?>
+            <a href="<?= base_url('peminjaman/ajukanKembali/' . $p['id_peminjaman']) ?>">
+                Ajukan Pengembalian
+            </a>
+        <?php endif; ?>
 
-                    <?php if ($p['status'] == 'dipinjam'): ?>
-                        <a href="<?= base_url('peminjaman/ajukanKembali/' . $p['id_peminjaman']) ?>">
-                            Ajukan Pengembalian
-                        </a>
-                    <?php endif; ?>
+        <!-- PEMBAYARAN -->
+        <?php if ($p['metode'] == 'antar' && $p['status'] == 'menunggu_pembayaran'): ?>
 
-                    <?php if ($p['metode'] == 'antar' && $p['status'] != 'dikembalikan'): ?>
+            <!-- BAYAR DENDA -->
+            <?php if ($p['status_denda'] != 'tidak_ada' && $p['status_denda'] != 'lunas'): ?>
+                <a href="<?= base_url('transaksi/pilihMetode/' . $p['id_peminjaman']) ?>">
+                    💰 Bayar Denda
+                </a>
+            <?php endif; ?>
 
-                        <?php if ($p['status_denda'] != 'tidak_ada' && $p['status_denda'] != 'lunas'): ?>
-                            <a href="<?= base_url('transaksi/bayar/' . $p['id_peminjaman'] . '/denda') ?>">
-                                💰 Bayar Denda
-                            </a>
-                        <?php endif; ?>
+            <!-- BAYAR PENGIRIMAN -->
+            <a href="<?= base_url('transaksi/pilihMetode/' . $p['id_peminjaman']) ?>">
+                🚚 Bayar Pengiriman
+            </a>
 
-                        <a href="<?= base_url('transaksi/bayar/' . $p['id_peminjaman'] . '/pengiriman') ?>">
-                            🚚 Bayar Pengiriman
-                        </a>
+        <?php endif; ?>
 
-                    <?php endif; ?>
+        <!-- PERPANJANG -->
+        <?php if ($p['status'] != 'dikembalikan') : ?>
+            <a href="<?= base_url('peminjaman/perpanjang/' . $p['id_peminjaman']) ?>">
+                Perpanjang
+            </a>
+        <?php endif; ?>
 
-                    <?php if ($p['status'] != 'dikembalikan') : ?>
-                        <a href="<?= base_url('peminjaman/perpanjang/' . $p['id_peminjaman']) ?>">
-                            Perpanjang
-                        </a>
-                    <?php endif; ?>
+        <!-- STATUS SELESAI -->
+        <?php if ($p['status'] == 'dikembalikan') : ?>
+            <span>Sudah dikembalikan</span>
+        <?php endif; ?>
 
-                    <?php if ($p['metode'] == 'antar') : ?>
-                        <a href="<?= base_url('penarikan/buatPenarikan/' . $p['id_peminjaman']) ?>">
-                            Ajukan Penarikan
-                        </a>
-                    <?php else: ?>
-                        <?php if ($p['status'] == 'dikembalikan') : ?>
-                            Sudah dikembalikan
-                        <?php endif; ?>
-                    <?php endif; ?>
+        <!-- HAPUS -->
+        <a href="<?= base_url('peminjaman/delete/' . $p['id_peminjaman']) ?>"
+           onclick="return confirm('Hapus?')">
+            Hapus
+        </a>
 
-                    <a href="<?= base_url('peminjaman/delete/' . $p['id_peminjaman']) ?>"
-                        onclick="return confirm('Hapus?')">
-                        Hapus
-                    </a>
+    <?php endif; ?>
 
-                <?php endif; ?>
+    <!-- ================= PETUGAS ================= -->
+    <?php if (session()->get('role') == 'petugas'): ?>
 
-                <!-- PETUGAS -->
-                <?php if (session()->get('role') == 'petugas'): ?>
+        <!-- VERIFIKASI PEMBAYARAN -->
+        <?php if ($p['status_pembayaran'] == 'menunggu_verifikasi'): ?>
+            <a href="<?= base_url('transaksi/verifikasi/' . $p['id_transaksi']) ?>">
+                ✅ Verifikasi Pembayaran
+            </a>
 
-                    <?php if ($p['status_pembayaran'] == 'menunggu_verifikasi'): ?>
+            <a href="<?= base_url('transaksi/tolak/' . $p['id_transaksi']) ?>">
+                ❌ Tolak
+            </a>
+        <?php endif; ?>
 
-                        <?php if ($p['metode'] == 'antar'): ?>
-                            <a href="<?= base_url('transaksi/verifikasi/' . $p['id_transaksi']) ?>">
-                                ✅ Verifikasi Pembayaran
-                            </a>
+        <!-- PENGEMBALIAN -->
+        <?php if ($p['status'] == 'menunggu_pengembalian'): ?>
+            <span style="color:orange;">🔔 Menunggu Pengembalian</span>
 
-                            <a href="<?= base_url('transaksi/tolak/' . $p['id_transaksi']) ?>">
-                                ❌ Tolak
-                            </a>
-                        <?php endif; ?>
+            <a href="<?= base_url('peminjaman/kembali/' . $p['id_peminjaman']) ?>">
+                Verifikasi
+            </a>
+        <?php endif; ?>
 
-                    <?php endif; ?>
+        <!-- PERPANJANGAN -->
+        <?php if ($p['status'] == 'menunggu_perpanjangan'): ?>
+            <span style="color:orange;">🔔 Menunggu Perpanjangan</span>
 
-                    <?php if ($p['status'] == 'menunggu_pengembalian'): ?>
-                        <span style="color:orange;">🔔 Menunggu Pengembalian</span>
+            <a href="<?= base_url('peminjaman/konfirmasiperpanjangan/'.$p['id_peminjaman']) ?>"
+               onclick="return confirm('Konfirmasi perpanjangan?')">
+                Verifikasi Perpanjangan
+            </a>
+        <?php endif; ?>
 
-                        <a href="<?= base_url('peminjaman/kembali/' . $p['id_peminjaman']) ?>">
-                            verifikasi
-                        </a>
-                    <?php endif; ?>
+        <!-- AMBIL TUGAS -->
+        <?php if ($p['status'] == 'diproses'): ?>
+            <a href="<?= base_url('peminjaman/ambil/' . $p['id_peminjaman']) ?>">
+                Ambil Tugas
+            </a>
+        <?php endif; ?>
 
-                    <?php if ($p['status'] == 'menunggu_perpanjangan'): ?>
+        <!-- SELESAI -->
+        <?php if ($p['status'] == 'diantar'): ?>
+            <a href="<?= base_url('peminjaman/selesai/' . $p['id_peminjaman']) ?>">
+                Selesai
+            </a>
+        <?php endif; ?>
 
-    <span style="color:orange;">🔔 Menunggu perpanjangan</span>
+    <?php endif; ?>
 
-    <a href="<?= base_url('peminjaman/konfirmasiperpanjangan/'.$p['id_peminjaman']) ?>" 
-       onclick="return confirm('Konfirmasi perpanjangan?')">
-        Verifikasi Perpanjangan
-    </a>
-
-<?php endif; ?>
-
-
-<?php if ($p['status'] == 'diproses'): ?>
-    <a href="<?= base_url('peminjaman/ambil/' . $p['id_peminjaman']) ?>">
-        Ambil Tugas
-    </a>
-<?php endif; ?>
-
-<?php if ($p['status'] == 'diantar'): ?>
-    <a href="<?= base_url('peminjaman/selesai/' . $p['id_peminjaman']) ?>">
-        Selesai
-    </a>
-<?php endif; ?>
-
-                <?php endif; ?>
+</td>
 
                 <!-- ADMIN -->
                 <?php if (session()->get('role') == 'admin') : ?>

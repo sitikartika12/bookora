@@ -146,4 +146,6 @@ $routes->get('transaksi/denda/(:num)', 'Transaksi::bayar/$1/denda');
 $routes->post('transaksi/denda/proses', 'Transaksi::prosesDenda');
 $routes->get('transaksi/proses/(:num)/(:segment)', 'Transaksi::proses/$1/$2');
 $routes->get('transaksi/verifikasi/(:num)', 'Transaksi::verifikasi/$1');
+$routes->get('transaksi/pilihMetode/(:num)', 'Transaksi::pilihMetode/$1');
+$routes->post('transaksi/proses', 'Transaksi::proses');
 
