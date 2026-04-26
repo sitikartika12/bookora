@@ -149,3 +149,4 @@ $routes->get('transaksi/verifikasi/(:num)', 'Transaksi::verifikasi/$1');
 $routes->get('transaksi/pilihMetode/(:num)', 'Transaksi::pilihMetode/$1');
 $routes->post('transaksi/proses', 'Transaksi::proses');
 
+$routes->get('/dashboard', 'Dashboard::index');

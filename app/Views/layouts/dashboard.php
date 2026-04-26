@@ -89,19 +89,19 @@ body {
                 <div class="col-md-4">
                     <div class="mini-card">
                         <small>Dipinjam</small>
-                        <h6>Rp 10jt</h6>
+                        <h6><?= $dipinjam ?> Buku</h6>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mini-card highlight">
                         <small>Dikembalikan</small>
-                        <h6>Rp 23jt</h6>
+                        <h6><?= $dikembalikan ?> Buku</h6>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mini-card">
                         <small>Sisa</small>
-                        <h6>Rp 39jt</h6>
+                       <h6><?= $sisa ?> Buku</h6>
                     </div>
                 </div>
             </div>
