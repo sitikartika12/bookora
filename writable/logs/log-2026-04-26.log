@@ -2398,3 +2398,33 @@ DEBUG - 2026-04-26 11:26:54 --> Session: Class initialized using 'CodeIgniter\Se
 DEBUG - 2026-04-26 11:26:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2026-04-26 11:27:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2026-04-26 11:27:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-26 11:49:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-04-26 11:49:44 --> ErrorException: Undefined variable $dipinjam
+[Method: GET, Route: dashboard]
+in APPPATH\Views\layouts\dashboard.php on line 92.
+ 1 APPPATH\Views\layouts\dashboard.php(92): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $dipinjam', 'C:\\xampp\\htdocs\\bookora\\app\\Views\\layouts\\dashboard.php', 92)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\bookora\\app\\Views\\layouts\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('layouts/dashboard', [], true)
+ 5 APPPATH\Controllers\Home.php(9): view('layouts/dashboard')
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2026-04-26 11:50:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-04-26 11:50:46 --> ErrorException: Undefined variable $dipinjam
+[Method: GET, Route: dashboard]
+in APPPATH\Views\layouts\dashboard.php on line 92.
+ 1 APPPATH\Views\layouts\dashboard.php(92): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $dipinjam', 'C:\\xampp\\htdocs\\bookora\\app\\Views\\layouts\\dashboard.php', 92)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\xampp\\htdocs\\bookora\\app\\Views\\layouts\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('layouts/dashboard', [], true)
+ 5 APPPATH\Controllers\Home.php(9): view('layouts/dashboard')
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

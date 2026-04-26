@@ -1,70 +1,6 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-<style>
-body {
-    background: #f5f7fb;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-/* CARD UTAMA */
-.custom-card {
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-}
-
-/* MINI CARD */
-.mini-card {
-    background: #f1f3f9;
-    padding: 12px;
-    border-radius: 15px;
-    text-align: center;
-    transition: 0.3s;
-}
-
-.mini-card:hover {
-    transform: translateY(-3px);
-}
-
-/* HIGHLIGHT */
-.mini-card.highlight {
-    background: linear-gradient(135deg, #6a5af9, #8b7bff);
-    color: white;
-}
-
-/* GRADIENT CARD */
-.gradient-card {
-    background: linear-gradient(135deg, #5f9cff, #7b61ff);
-    border-radius: 20px;
-}
-
-/* FAKE CHART */
-.fake-chart {
-    height: 120px;
-    background: linear-gradient(to top, #6a5af9, transparent);
-    border-radius: 10px;
-    margin-top: 10px;
-}
-
-/* BUTTON */
-.btn-dark {
-    border-radius: 20px;
-    padding: 6px 15px;
-}
-
-.btn-light {
-    border-radius: 20px;
-    padding: 6px 15px;
-}
-
-/* TABLE */
-.table tr {
-    border-bottom: 1px solid #eee;
-}
-
-</style>
-
 <div class="container py-4">
 
     <!-- HEADER -->
@@ -89,19 +25,19 @@ body {
                 <div class="col-md-4">
                     <div class="mini-card">
                         <small>Dipinjam</small>
-                        <h6><?= $dipinjam ?> Buku</h6>
+                        <h6>Rp 10jt</h6>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mini-card highlight">
                         <small>Dikembalikan</small>
-                        <h6><?= $dikembalikan ?> Buku</h6>
+                        <h6>Rp 23jt</h6>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mini-card">
                         <small>Sisa</small>
-                       <h6><?= $sisa ?> Buku</h6>
+                        <h6>Rp 39jt</h6>
                     </div>
                 </div>
             </div>
@@ -126,7 +62,7 @@ body {
         </div>
 
         <div class="col-md-4">
-            <div class="card custom-card gradient-card text-white mb-4">
+            <div class="card custom-card mb-4 gradient-card text-white">
                 <div class="card-body">
                     <h6>Kesehatan Sistem</h6>
                     <h2>85%</h2>
