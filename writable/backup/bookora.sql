@@ -84,7 +84,7 @@ CREATE TABLE `buku` (
 
 LOCK TABLES `buku` WRITE;
 /*!40000 ALTER TABLE `buku` DISABLE KEYS */;
-INSERT INTO `buku` VALUES (37,'9786234580099','cita cita dan persahabatan',3,3,3,2023,2,0,'Afif dan Jihan memiliki cita-cita tinggi untuk \"go internasional\" di bidang yang mereka minati. Mereka sangat bersemangat, bahkan sampai mengikuti kursus kelas online yang pesertanya rata-rata orang dewasa demi memperdalam kemampuan mereka','1776529804_827b1893ba60b69a80f2.jpg','2026-04-18 04:44:45',NULL),(41,'9786231031433','Bandung After Rain',1,7,2,2025,2,1,'Cerita berfokus pada Hemachandra (Hema), seorang mahasiswa yang tinggal di Bandung bersama ibundanya. Ia baru saja mengakhiri hubungan selama hampir tujuh tahun dengan kekasihnya, Rania (Ra), tepat satu bulan sebelum hari jadi mereka yang ke-7. Perpisahan ini terjadi akibat kesalahan fatal dan sikap acuh yang dilakukan Hema secara sengaja, yang membuat Rania enggan memberikan kesempatan kedua','1776529817_a612d955132bb4604458.jpg','2026-04-18 04:53:00',NULL),(46,'9786342360507','Ekonomi',2,15,14,2020,3,3,'Buku ini sangat cocok bagi pemula atau mahasiswa. Isinya fokus pada prinsip dasar ekonomi Islam, perbandingannya dengan sistem ekonomi konvensional, serta bagaimana nilai-nilai tauhid dan keadilan diterapkan dalam aktivitas pasar sehari-hari.','1776531645_9bf465c83f5473c09fc3.png','2026-04-18 17:00:45',NULL),(47,'9786230972201','Rintik Terakhir',1,1,15,2024,3,3,' Cerita berfokus pada Karang Samudra Daneswara yang terbangun dari koma selama tiga tahun setelah insiden penembakan oleh ibu kandungnya. Namun, saat terbangun, identitasnya dikuasai oleh kepribadian baru bernama Arutala Sembagi Daneswara, seorang remaja tunarungu yang dominan.','1776666328_977cdcf6e4a6c8cc9342.jpg','2026-04-20 06:25:28',NULL),(48,'9786028054928','psikologi ',2,16,16,2020,5,5,'Psikologi Belajar Orang Dewasa adalah cabang ilmu yang mempelajari bagaimana orang dewasa belajar, memahami informasi baru, dan mengembangkan keterampilan sepanjang hidupnya','1776666651_f3334195168db777c969.jpg','2026-04-20 06:30:51',NULL),(49,'9786238649372','Manajemen Pendidikan',2,17,17,2015,6,6,'Di era globalisasi dan revolusi industri 4.0, dunia pendidikan menghadapi berbagai tantangan yang kompleks dan dinamis. “Manajemen Pendidikan: Strategi Modern untuk Kepemimpinan Efektif” merupakan buku referensi yang esensial, dirancang untuk membekali para pendidik, pemimpin pendidikan, dan para stakeholder terkait dengan wawasan serta alat-alat praktis untuk mengatasi tantangan tersebut.','1776788629_65fe89a3b40a2fcf9249.jpeg','2026-04-21 16:23:49',NULL),(50,' 9789797807214','Sabtu Bersama Bapa',1,18,18,2014,4,4,'“Hai, Satya! Hai, Cakra!” Sang Bapak melambaikan tangan.\r\n“Ini Bapak.\r\nIya, benar kok, ini Bapak.\r\nBapak cuma pindah ke tempat lain. Gak sakit. Alhamdulillah, berkat doa Satya dan Cakra.\r\n\r\n…\r\n\r\nMungkin Bapak tidak dapat duduk dan bermain di samping kalian.\r\nTapi, Bapak tetap ingin kalian tumbuh dengan Bapak di samping kalian.\r\nIngin tetap dapat bercerita kepada kalian.\r\nIngin tetap dapat mengajarkan kalian.\r\nBapak sudah siapkan.\r\n\r\nKetika punya pertanyaan, kalian tidak pernah perlu bingung ke mana harus mencari jawaban.\r\nI don’t let death take these, away from us.\r\nI don’t give death, a chance.\r\n\r\nBapak ada di sini. Di samping kalian.\r\nBapak sayang kalian.”','1776844989_c35ff27e4be97501a7d6.jpeg','2026-04-22 08:03:09',NULL),(51,' 602-6992-60-X','Biologi',2,19,19,2014,5,5,'Buku ini berisi ringkasan materi lengkap dengan peta konsep, cara cepat menghafal, serta contoh soal dan pembahasan.\r\n\r\nDengan keungggulan tersebut, buku ini dapat dijadikan sebagai buku penunjang pelajaran bagi siswa SMA untuk menghadapi ulangan harian, ujian tengah dan akhir semester, ujian sekolah, ujian nasional, bahkan SBMPTN dan USM PTN tertentu.','1776845258_9333a1575397603cb476.jpg','2026-04-22 08:07:38',NULL),(52,'978-979-22-7355-7','Komik Sains',3,20,20,2016,3,3,'Buku ini khusus untuk kamu yang selalu ingin tahu. Kamu akan menemukan jawaban dari pertanyaan yang membuat penasaran. Dijamin kamu akan mudah memahami dan menyukai sains. Dikemas dengan komik yang lucu dan menarik serta penjelasan sederhana. Siapa pun bisa jadi ahli sains.','1776871332_388037b4e3b65c5a0c44.jpg','2026-04-22 08:12:55',NULL);
+INSERT INTO `buku` VALUES (37,'9786234580099','cita cita dan persahabatan',3,3,3,2023,2,1,'Afif dan Jihan memiliki cita-cita tinggi untuk \"go internasional\" di bidang yang mereka minati. Mereka sangat bersemangat, bahkan sampai mengikuti kursus kelas online yang pesertanya rata-rata orang dewasa demi memperdalam kemampuan mereka','1776529804_827b1893ba60b69a80f2.jpg','2026-04-18 04:44:45',NULL),(41,'9786231031433','Bandung After Rain',1,7,2,2025,2,2,'Cerita berfokus pada Hemachandra (Hema), seorang mahasiswa yang tinggal di Bandung bersama ibundanya. Ia baru saja mengakhiri hubungan selama hampir tujuh tahun dengan kekasihnya, Rania (Ra), tepat satu bulan sebelum hari jadi mereka yang ke-7. Perpisahan ini terjadi akibat kesalahan fatal dan sikap acuh yang dilakukan Hema secara sengaja, yang membuat Rania enggan memberikan kesempatan kedua','1776529817_a612d955132bb4604458.jpg','2026-04-18 04:53:00',NULL),(46,'9786342360507','Ekonomi',2,15,14,2020,3,3,'Buku ini sangat cocok bagi pemula atau mahasiswa. Isinya fokus pada prinsip dasar ekonomi Islam, perbandingannya dengan sistem ekonomi konvensional, serta bagaimana nilai-nilai tauhid dan keadilan diterapkan dalam aktivitas pasar sehari-hari.','1776531645_9bf465c83f5473c09fc3.png','2026-04-18 17:00:45',NULL),(47,'9786230972201','Rintik Terakhir',1,1,15,2024,3,3,' Cerita berfokus pada Karang Samudra Daneswara yang terbangun dari koma selama tiga tahun setelah insiden penembakan oleh ibu kandungnya. Namun, saat terbangun, identitasnya dikuasai oleh kepribadian baru bernama Arutala Sembagi Daneswara, seorang remaja tunarungu yang dominan.','1776666328_977cdcf6e4a6c8cc9342.jpg','2026-04-20 06:25:28',NULL),(48,'9786028054928','psikologi ',2,16,16,2020,5,5,'Psikologi Belajar Orang Dewasa adalah cabang ilmu yang mempelajari bagaimana orang dewasa belajar, memahami informasi baru, dan mengembangkan keterampilan sepanjang hidupnya','1776666651_f3334195168db777c969.jpg','2026-04-20 06:30:51',NULL),(49,'9786238649372','Manajemen Pendidikan',2,17,17,2015,6,6,'Di era globalisasi dan revolusi industri 4.0, dunia pendidikan menghadapi berbagai tantangan yang kompleks dan dinamis. “Manajemen Pendidikan: Strategi Modern untuk Kepemimpinan Efektif” merupakan buku referensi yang esensial, dirancang untuk membekali para pendidik, pemimpin pendidikan, dan para stakeholder terkait dengan wawasan serta alat-alat praktis untuk mengatasi tantangan tersebut.','1776788629_65fe89a3b40a2fcf9249.jpeg','2026-04-21 16:23:49',NULL),(50,' 9789797807214','Sabtu Bersama Bapa',1,18,18,2014,4,4,'“Hai, Satya! Hai, Cakra!” Sang Bapak melambaikan tangan.\r\n“Ini Bapak.\r\nIya, benar kok, ini Bapak.\r\nBapak cuma pindah ke tempat lain. Gak sakit. Alhamdulillah, berkat doa Satya dan Cakra.\r\n\r\n…\r\n\r\nMungkin Bapak tidak dapat duduk dan bermain di samping kalian.\r\nTapi, Bapak tetap ingin kalian tumbuh dengan Bapak di samping kalian.\r\nIngin tetap dapat bercerita kepada kalian.\r\nIngin tetap dapat mengajarkan kalian.\r\nBapak sudah siapkan.\r\n\r\nKetika punya pertanyaan, kalian tidak pernah perlu bingung ke mana harus mencari jawaban.\r\nI don’t let death take these, away from us.\r\nI don’t give death, a chance.\r\n\r\nBapak ada di sini. Di samping kalian.\r\nBapak sayang kalian.”','1776844989_c35ff27e4be97501a7d6.jpeg','2026-04-22 08:03:09',NULL),(51,' 602-6992-60-X','Biologi',2,19,19,2014,5,5,'Buku ini berisi ringkasan materi lengkap dengan peta konsep, cara cepat menghafal, serta contoh soal dan pembahasan.\r\n\r\nDengan keungggulan tersebut, buku ini dapat dijadikan sebagai buku penunjang pelajaran bagi siswa SMA untuk menghadapi ulangan harian, ujian tengah dan akhir semester, ujian sekolah, ujian nasional, bahkan SBMPTN dan USM PTN tertentu.','1776845258_9333a1575397603cb476.jpg','2026-04-22 08:07:38',NULL),(52,'978-979-22-7355-7','Komik Sains',3,20,20,2016,3,3,'Buku ini khusus untuk kamu yang selalu ingin tahu. Kamu akan menemukan jawaban dari pertanyaan yang membuat penasaran. Dijamin kamu akan mudah memahami dan menyukai sains. Dikemas dengan komik yang lucu dan menarik serta penjelasan sederhana. Siapa pun bisa jadi ahli sains.','1776871332_388037b4e3b65c5a0c44.jpg','2026-04-22 08:12:55',NULL);
 /*!40000 ALTER TABLE `buku` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +156,7 @@ CREATE TABLE `detail_peminjaman` (
   PRIMARY KEY (`id_detail`),
   KEY `detail_peminjaman_ibfk_1` (`id_peminjaman`),
   KEY `detail_peminjaman_ibfk_2` (`id_buku`)
-) ENGINE=InnoDB AUTO_INCREMENT=300 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=304 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +165,7 @@ CREATE TABLE `detail_peminjaman` (
 
 LOCK TABLES `detail_peminjaman` WRITE;
 /*!40000 ALTER TABLE `detail_peminjaman` DISABLE KEYS */;
-INSERT INTO `detail_peminjaman` VALUES (297,326,37,1),(298,327,37,1),(299,328,41,1);
+INSERT INTO `detail_peminjaman` VALUES (303,332,37,1);
 /*!40000 ALTER TABLE `detail_peminjaman` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,8 +237,9 @@ CREATE TABLE `peminjaman` (
   `metode` enum('ambil','antar') DEFAULT NULL,
   `perpanjangan` int(11) DEFAULT NULL,
   `status_perpanjangan` enum('tidak_ada','menunggu_perpanjangan','disetujui','ditolak') DEFAULT 'tidak_ada',
+  `tanggal_dikembalikan` date DEFAULT NULL,
   PRIMARY KEY (`id_peminjaman`)
-) ENGINE=InnoDB AUTO_INCREMENT=329 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=333 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,7 +248,7 @@ CREATE TABLE `peminjaman` (
 
 LOCK TABLES `peminjaman` WRITE;
 /*!40000 ALTER TABLE `peminjaman` DISABLE KEYS */;
-INSERT INTO `peminjaman` VALUES (326,25,24,'2026-04-26','2026-05-03','selesai','bandung ranacaekek','antar',NULL,'tidak_ada'),(328,25,NULL,'2026-04-26','2026-05-03','dipinjam',NULL,'ambil',NULL,'tidak_ada');
+INSERT INTO `peminjaman` VALUES (332,25,NULL,'2026-04-26','2026-05-03','dipinjam',NULL,'ambil',NULL,'tidak_ada',NULL);
 /*!40000 ALTER TABLE `peminjaman` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,7 +388,6 @@ CREATE TABLE `pengiriman` (
 
 LOCK TABLES `pengiriman` WRITE;
 /*!40000 ALTER TABLE `pengiriman` DISABLE KEYS */;
-INSERT INTO `pengiriman` VALUES (161,326,'bandung ranacaekek',10000.00,'diproses',NULL,24);
 /*!40000 ALTER TABLE `pengiriman` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -513,7 +513,7 @@ CREATE TABLE `transaksi` (
   `bukti_pembayaran` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_transaksi`),
   KEY `transaksi_ibfk_1` (`id_peminjaman`)
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -522,7 +522,6 @@ CREATE TABLE `transaksi` (
 
 LOCK TABLES `transaksi` WRITE;
 /*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
-INSERT INTO `transaksi` VALUES (150,326,'pengiriman',10000.00,'lunas','2026-04-26 10:13:23','cod',NULL);
 /*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -595,4 +594,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-26 17:18:49
+-- Dump completed on 2026-04-26 19:14:59
