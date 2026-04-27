@@ -141,4 +141,44 @@ class Pengembalian extends BaseController
 
         return redirect()->to('/pengembalian');
     }
+
+    public function edit($id)
+{
+    if (session()->get('role') != 'admin') {
+        return redirect()->back();
+    }
+
+    $model = new \App\Models\PengirimanModel();
+    $data['pengiriman'] = $model->find($id);
+
+    return view('admin/pengiriman/edit', $data);
+}
+
+public function update($id)
+{
+    if (session()->get('role') != 'admin') {
+        return redirect()->back();
+    }
+
+    $model = new \App\Models\PengirimanModel();
+
+    $model->update($id, [
+        'alamat' => $this->request->getPost('alamat'),
+        'status' => $this->request->getPost('status'),
+    ]);
+
+    return redirect()->to('/pengiriman')->with('success', 'Data berhasil diupdate');
+}
+
+public function delete($id)
+{
+    if (session()->get('role') != 'admin') {
+        return redirect()->back();
+    }
+
+    $model = new \App\Models\PengirimanModel();
+    $model->delete($id);
+
+    return redirect()->to('/pengiriman')->with('success', 'Data berhasil dihapus');
+}
 }

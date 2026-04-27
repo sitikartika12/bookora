@@ -6,6 +6,8 @@ use App\Models\PeminjamanModel;
 use App\Models\UsersModel;
 use App\Models\DetailPeminjamanModel;
 use App\Models\BukuModel;
+use App\Models\PengembalianModel;
+
 
 class Peminjaman extends BaseController
 {
@@ -513,13 +515,30 @@ public function verifikasi($id)
     // petugas verifikasi
     if (session()->get('role') == 'petugas') {
 
-        $model->update($id, [
-            'status' => 'dikembalikan',
-            'tanggal_dikembalikan' => date('Y-m-d')
-        ]);
+    $pengembalianModel = new PengembalianModel();
 
-        return redirect()->back()->with('success', 'Pengembalian berhasil diverifikasi');
+    // hitung denda (contoh sederhana)
+    $denda = 0;
+
+    if (date('Y-m-d') > $p['tanggal_kembali']) {
+        $selisih = (strtotime(date('Y-m-d')) - strtotime($p['tanggal_kembali'])) / (60*60*24);
+        $denda = $selisih * 1000; // misal 1000 per hari
     }
+
+    // INSERT ke tabel pengembalian
+    $pengembalianModel->save([
+        'id_peminjaman' => $id,
+        'tanggal_dikembalikan' => date('Y-m-d'),
+        'denda' => $denda
+    ]);
+
+    // UPDATE status peminjaman
+    $model->update($id, [
+        'status' => 'dikembalikan'
+    ]);
+
+    return redirect()->back()->with('success', 'Pengembalian berhasil diverifikasi');
+}
 }
 
     public function perpanjang($id)
