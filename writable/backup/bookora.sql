@@ -156,7 +156,7 @@ CREATE TABLE `detail_peminjaman` (
   PRIMARY KEY (`id_detail`),
   KEY `detail_peminjaman_ibfk_1` (`id_peminjaman`),
   KEY `detail_peminjaman_ibfk_2` (`id_buku`)
-) ENGINE=InnoDB AUTO_INCREMENT=304 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=314 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +165,7 @@ CREATE TABLE `detail_peminjaman` (
 
 LOCK TABLES `detail_peminjaman` WRITE;
 /*!40000 ALTER TABLE `detail_peminjaman` DISABLE KEYS */;
-INSERT INTO `detail_peminjaman` VALUES (303,332,37,1);
+INSERT INTO `detail_peminjaman` VALUES (313,342,37,1);
 /*!40000 ALTER TABLE `detail_peminjaman` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,7 +239,7 @@ CREATE TABLE `peminjaman` (
   `status_perpanjangan` enum('tidak_ada','menunggu_perpanjangan','disetujui','ditolak') DEFAULT 'tidak_ada',
   `tanggal_dikembalikan` date DEFAULT NULL,
   PRIMARY KEY (`id_peminjaman`)
-) ENGINE=InnoDB AUTO_INCREMENT=333 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=343 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,7 +248,7 @@ CREATE TABLE `peminjaman` (
 
 LOCK TABLES `peminjaman` WRITE;
 /*!40000 ALTER TABLE `peminjaman` DISABLE KEYS */;
-INSERT INTO `peminjaman` VALUES (332,25,NULL,'2026-04-26','2026-05-03','dipinjam',NULL,'ambil',NULL,'tidak_ada',NULL);
+INSERT INTO `peminjaman` VALUES (342,25,NULL,'2026-04-27','2026-05-04','dikembalikan',NULL,'ambil',NULL,'tidak_ada',NULL);
 /*!40000 ALTER TABLE `peminjaman` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +303,7 @@ CREATE TABLE `penerbit` (
 
 LOCK TABLES `penerbit` WRITE;
 /*!40000 ALTER TABLE `penerbit` DISABLE KEYS */;
-INSERT INTO `penerbit` VALUES (2,'Black Swan Books','PT Sinar Angsa Media'),(3,' Gema Insani','Depok'),(4,'Kemendikbudristek','Kompleks Kemendikbudristek, Jl. Gunung Sahari Raya No. 4, Jakarta Pusat.'),(8,'gradien mediatama',NULL),(14,' UMSU PRESS',NULL),(15,' Skuad Media Cakrawala',NULL),(16,'Cipta Prima Nusantara',NULL),(17,'PT Media Penerbit Indonesia',NULL),(18,'GagasMedia',NULL),(19,'CMedia',NULL),(20,'Plants vs. Zombies',NULL);
+INSERT INTO `penerbit` VALUES (2,'Black Swan Books','PT Sinar Angsa Media'),(3,' Gema Insani','Depok'),(4,'Kemendikbudristek','Kompleks Kemendikbudristek, Jl. Gunung Sahari Raya No. 4, Jakarta Pusat.'),(8,'gradien mediatama','Jl. Wora Wari A-86, Baciro, Yogyakarta'),(14,' UMSU PRESS',' Jl. Kapten Mukhtar Basri '),(15,' Skuad Media Cakrawala','Kompleks De Fatmawati'),(16,'Cipta Prima Nusantara',' Green Village No. 115, Ngijo, Kec. Gunungpati'),(17,'PT Media Penerbit Indonesia',' Komplek Royal Suite No. 6C, Jl. Sedap Malam IX'),(18,'GagasMedia','Jl. H. Montong No. 57, Ciganjur'),(19,'CMedia','Jl. H. Montong No. 57, Ciganjur'),(20,'Plants vs. Zombies','Gedung Kompas Gramedia');
 /*!40000 ALTER TABLE `penerbit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,12 +344,12 @@ DROP TABLE IF EXISTS `pengembalian`;
 CREATE TABLE `pengembalian` (
   `id_pengembalian` int(11) NOT NULL AUTO_INCREMENT,
   `id_peminjaman` int(11) DEFAULT NULL,
-  `tanggal_kembali` date DEFAULT NULL,
+  `tanggal_dikembalikan` date DEFAULT NULL,
   `denda` decimal(10,2) DEFAULT 0.00,
   `keterangan` text DEFAULT NULL,
   PRIMARY KEY (`id_pengembalian`),
   KEY `pengembalian_ibfk_1` (`id_peminjaman`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -358,6 +358,7 @@ CREATE TABLE `pengembalian` (
 
 LOCK TABLES `pengembalian` WRITE;
 /*!40000 ALTER TABLE `pengembalian` DISABLE KEYS */;
+INSERT INTO `pengembalian` VALUES (96,342,'2026-04-27',0.00,NULL);
 /*!40000 ALTER TABLE `pengembalian` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -379,7 +380,7 @@ CREATE TABLE `pengiriman` (
   PRIMARY KEY (`id_pengiriman`),
   KEY `pengiriman_ibfk_1` (`id_peminjaman`),
   KEY `pengiriman_ibfk_2` (`petugas_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=162 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -513,7 +514,7 @@ CREATE TABLE `transaksi` (
   `bukti_pembayaran` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_transaksi`),
   KEY `transaksi_ibfk_1` (`id_peminjaman`)
-) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -594,4 +595,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-26 19:14:59
+-- Dump completed on 2026-04-27 16:36:48
