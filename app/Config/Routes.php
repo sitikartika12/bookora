@@ -162,3 +162,4 @@ $routes->get('penarikan/ambil/(:num)', 'Penarikan::ambil/$1');
 
 
 $routes->get('/dashboard', 'Dashboard::index');
+

@@ -27,7 +27,19 @@
                 </select>
             </div>
 
-            <div class="mb-3">
+            <!-- BOX TRANSFER -->
+            <div id="transferBox" class="alert alert-info mt-3" style="display:none;">
+                <h6>Transfer Bank</h6>
+                <p><b>Bank:</b> BCA</p>
+                <p><b>No Rekening:</b> 1234567890</p>
+                <p><b>Atas Nama:</b> Perpustakaan Bookora</p>
+
+                <p class="text-danger mb-0">
+                    Gunakan berita: ID <?= $transaksi['id_transaksi'] ?>
+                </p>
+            </div>
+
+            <div class="mb-3 mt-3">
                 <label>Upload Bukti (jika transfer)</label>
                 <input type="file" name="bukti" class="form-control">
             </div>
@@ -41,5 +53,20 @@
     </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    let metodeSelect = document.querySelector('select[name="metode"]');
+    let transferBox = document.getElementById('transferBox');
+
+    metodeSelect.addEventListener('change', function () {
+        if (this.value === 'transfer') {
+            transferBox.style.display = 'block';
+        } else {
+            transferBox.style.display = 'none';
+        }
+    });
+});
+</script>
 
 <?= $this->endSection() ?>
