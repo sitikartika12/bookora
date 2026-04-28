@@ -26,25 +26,23 @@ class Transaksi extends Controller
     // ======================
     // HALAMAN PEMBAYARAN
     // ======================
-    public function bayar($id_peminjaman, $jenis)
-    {
-        $model = new TransaksiModel();
+    public function bayar($id_peminjaman)
+{
+    $model = new TransaksiModel();
 
-        $transaksi = $model
-            ->where('id_peminjaman', $id_peminjaman)
-            ->where('jenis', $jenis)
-            ->first();
+    $transaksi = $model
+        ->where('id_peminjaman', $id_peminjaman)
+        ->first();
 
-        if (!$transaksi) {
-            return redirect()->to('/peminjaman')
-                ->with('error', 'Transaksi tidak ditemukan');
-        }
-
-        return view('transaksi/bayar', [
-            'transaksi' => $transaksi
-        ]);
+    if (!$transaksi) {
+        return redirect()->to('/peminjaman')
+            ->with('error', 'Transaksi tidak ditemukan');
     }
 
+    return view('transaksi/bayar', [
+        'transaksi' => $transaksi
+    ]);
+}
     // ======================
     // PROSES PEMBAYARAN
     // ======================

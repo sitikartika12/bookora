@@ -102,7 +102,7 @@ foreach ($data['peminjaman'] as &$p) {
                         'id_peminjaman' => $p['id_peminjaman'],
                         'jenis' => 'denda',
                         'jumlah' => $denda,
-                        'status' => 'menunggu_verifikasi',
+                        'status' => 'belum_bayar',
                         'metode_pembayaran' => null
                     ]);
 
@@ -286,9 +286,9 @@ $id_peminjaman = $peminjamanModel->insert([
         if ($transaksi && $transaksi['status'] != 'lunas') {
 
             // 🚨 paksa ke halaman bayar denda
-            return redirect()->to(
-                base_url('transaksi/bayar/'.$id_peminjaman.'/denda')
-            )->with('error', 'Harap selesaikan pembayaran denda terlebih dahulu');
+           return redirect()->to(
+    base_url('transaksi/denda/bayar/'.$id_peminjaman)
+)->with('error', 'Harap selesaikan pembayaran denda terlebih dahulu');
         }
     }
 
@@ -343,8 +343,13 @@ public function konfirmasiPerpanjangan($id)
 }
 
 
- public function bayar($id_peminjaman, $jenis)
+public function bayar($id_peminjaman, $jenis = null)
 {
+    if (!$jenis) {
+        return redirect()->back()
+            ->with('error', 'Jenis pembayaran tidak ditemukan');
+    }
+
     $peminjamanModel = new \App\Models\PeminjamanModel();
     $transaksiModel  = new \App\Models\TransaksiModel();
 
@@ -601,7 +606,7 @@ public function tolakPerpanjangan($id)
 
         $model->update($id, [
             'id_petugas' => session()->get('id'),
-            'status' => 'diantar'
+            'status' => 'diproses'
         ]);
 
         return redirect()->to('/peminjaman');

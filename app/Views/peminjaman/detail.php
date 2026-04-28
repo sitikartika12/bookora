@@ -104,17 +104,17 @@
                     <?php if ($t['status'] != 'lunas'): ?>
 
                         <?php if ($t['jenis'] == 'denda'): ?>
-                            <a href="<?= base_url('transaksi/bayar/'.$peminjaman['id_peminjaman'].'/denda') ?>"
-                               class="btn btn-sm btn-danger">
-                                💰 Bayar Denda
-                            </a>
+                           <a href="<?= base_url('transaksi/denda/bayar/'.$t['id_transaksi']) ?>"
+   class="btn btn-sm btn-danger">
+    💰 Bayar Denda
+</a>
                         <?php endif; ?>
 
                         <?php if ($t['jenis'] == 'pengiriman'): ?>
-                            <a href="<?= base_url('transaksi/bayar/'.$peminjaman['id_peminjaman'].'/pengiriman') ?>"
-                               class="btn btn-sm btn-warning">
-                                🚚 Bayar Pengiriman
-                            </a>
+                            <a href="<?= base_url('transaksi/pilih-metode/'.$peminjaman['id_peminjaman']) ?>"
+   class="btn btn-sm btn-warning">
+    🚚 Bayar Pengiriman
+</a>
                         <?php endif; ?>
 
                     <?php endif; ?>

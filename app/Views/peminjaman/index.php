@@ -80,18 +80,21 @@
                         </td>
 
                         <!-- STATUS -->
-                        <td>
-                            <?php
-                                $color = 'secondary';
-                                if ($p['status']=='diproses') $color='primary';
-                                elseif ($p['status']=='diantar') $color='warning';
-                                elseif ($p['status']=='dipinjam') $color='success';
-                                elseif ($p['status']=='dikembalikan') $color='dark';
-                            ?>
-                            <span class="badge bg-<?= $color ?>">
-                                <?= $p['status'] ?>
-                            </span>
-                        </td>
+<td>
+    <?php
+        $color = 'secondary';
+
+        if ($p['status'] == 'diproses') $color = 'primary';
+        elseif ($p['status'] == 'dipinjam') $color = 'success';
+        elseif ($p['status'] == 'dikembalikan') $color = 'dark';
+        elseif ($p['status'] == 'lunas') $color = 'success';
+        elseif ($p['status'] == 'selesai') $color = 'success';
+    ?>
+
+    <span class="badge bg-<?= $color ?>">
+        <?= $p['status'] ?>
+    </span>
+</td>
 
                         <!-- PEMBAYARAN -->
                         <td>
@@ -136,15 +139,25 @@
     <?php endif; ?>
 
 
-                                    <?php if ($p['metode']=='antar' && $p['status']=='menunggu_pembayaran'): ?>
-                                        <a href="<?= base_url('transaksi/pilihMetode/'.$p['id_peminjaman']) ?>"
-                                           class="btn btn-sm btn-success">
-                                            Bayar
-                                        </a>
-                                    <?php endif; ?>
+                                  <!-- DENDA -->
+<?php if (!empty($p['status_denda']) && in_array($p['status_denda'], ['belum_bayar','ditolak'])) : ?>
 
+    <a href="<?= base_url('transaksi/denda/bayar/'.$p['id_transaksi']) ?>"
+       class="btn btn-sm btn-danger">
+        💰 Bayar Denda
+    </a>
 
-                                <?php endif; ?>
+    <?php endif; ?>
+
+<?php elseif ($p['status_denda'] == 'menunggu_verifikasi') : ?>
+
+    <span class="badge bg-warning">Menunggu Verifikasi</span>
+
+<?php elseif ($p['status_denda'] == 'lunas') : ?>
+
+    <span class="badge bg-success">Denda Lunas</span>
+
+<?php endif; ?>
 
                                 <!-- PETUGAS -->
                                 <?php if (session()->get('role') == 'petugas'): ?>

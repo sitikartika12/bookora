@@ -133,20 +133,32 @@ $routes->get('penarikan/buatPenarikan/(:num)', 'Penarikan::buatPenarikan/$1');
 $routes->get('penarikan', 'Penarikan::index');
 $routes->get('penarikan/ambil/(:num)', 'Penarikan::ambil/$1');
 
-// TRANSAKSI
-$routes->get('transaksi/bayar/(:num)', 'Transaksi::bayar/$1');
-$routes->get('transaksi/bayar/(:num)/(:segment)', 'Transaksi::bayar/$1/$2');
-$routes->post('transaksi/proses', 'Transaksi::proses');
+    // TRANSAKSI UMUM
+    $routes->group('transaksi', function($routes) {
 
-$routes->get('transaksi', 'Transaksi::index');
-$routes->get('transaksi/verifikasi/(:num)', 'Transaksi::verifikasi/$1');
-$routes->get('transaksi/tolak/(:num)', 'Transaksi::tolak/$1');
-$routes->get('transaksi/denda', 'Transaksi::denda');
-$routes->get('transaksi/denda/(:num)', 'Transaksi::bayar/$1/denda');
-$routes->post('transaksi/denda/proses', 'Transaksi::prosesDenda');
-$routes->get('transaksi/proses/(:num)/(:segment)', 'Transaksi::proses/$1/$2');
-$routes->get('transaksi/verifikasi/(:num)', 'Transaksi::verifikasi/$1');
-$routes->get('transaksi/pilihMetode/(:num)', 'Transaksi::pilihMetode/$1');
-$routes->post('transaksi/proses', 'Transaksi::proses');
+    // ======================
+    // TRANSAKSI UTAMA
+    // ======================
+    $routes->get('/', 'Transaksi::index');
+
+    $routes->get('bayar/(:num)', 'Transaksi::bayar/$1');
+    $routes->post('proses', 'Transaksi::proses');
+
+    $routes->get('verifikasi/(:num)', 'Transaksi::verifikasi/$1');
+    $routes->get('tolak/(:num)', 'Transaksi::tolak/$1');
+
+    // ======================
+    // DENDA (SEPARATE MODULE)
+    // ======================
+    $routes->get('denda', 'Transaksi::denda');
+    $routes->get('denda/bayar/(:num)', 'Transaksi::bayarDenda/$1');
+    $routes->post('denda/proses', 'Transaksi::prosesDenda');
+
+    // ======================
+    // PILIH METODE (TRANSAKSI UMUM)
+    // ======================
+    $routes->get('pilih-metode/(:num)', 'Transaksi::pilihMetode/$1');
+});
+
 
 $routes->get('/dashboard', 'Dashboard::index');

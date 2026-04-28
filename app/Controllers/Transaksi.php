@@ -54,8 +54,9 @@ class Transaksi extends Controller
         }
 
         return view('transaksi/pilih_metode', [
-            'transaksi' => $transaksi
-        ]);
+    'transaksi' => $transaksi,
+    'id_peminjaman' => $id_peminjaman
+]);
     }
 
     // ======================
@@ -119,50 +120,141 @@ public function verifikasi($id)
     // PROSES PEMBAYARAN + UPLOAD BUKTI
     // ======================
     public function proses()
-    {
-        $model = new TransaksiModel();
-        $peminjamanModel = new PeminjamanModel();
+{
+    $model = new TransaksiModel();
+    $peminjamanModel = new PeminjamanModel();
 
-        $id     = $this->request->getPost('id_transaksi');
-        $metode = $this->request->getPost('metode');
-        $file   = $this->request->getFile('bukti');
+    $id     = $this->request->getPost('id_transaksi');
+    $metode = $this->request->getPost('metode');
+    $file   = $this->request->getFile('bukti');
 
-        $trx = $model->find($id);
+    $trx = $model->find($id);
 
-        if (!$trx) {
-            return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
-        }
-
-        // validasi metode
-        if ($trx['jenis'] == 'denda') {
-            if (!in_array($metode, ['transfer', 'cash'])) {
-                return redirect()->back()->with('error', 'Metode tidak valid');
-            }
-        } else {
-            if (!in_array($metode, ['cod', 'qris', 'transfer'])) {
-                return redirect()->back()->with('error', 'Metode tidak valid');
-            }
-        }
-
-        $status = ($metode == 'cod') ? 'lunas' : 'menunggu_verifikasi';
-
-        $dataUpdate = [
-            'metode_pembayaran' => $metode,
-            'status'            => $status
-        ];
-
-        // upload bukti
-        if ($file && $file->isValid() && !$file->hasMoved()) {
-            $namaBaru = $file->getRandomName();
-            $file->move('uploads/bukti/', $namaBaru);
-
-            $dataUpdate['bukti_pembayaran'] = $namaBaru;
-        }
-
-        // update transaksi
-        $model->update($id, $dataUpdate);
-
-        return redirect()->to('/peminjaman')
-            ->with('success', 'Pembayaran berhasil diproses');
+    if (!$trx) {
+        return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
     }
+
+    // ======================
+    // VALIDASI + LOGIC STATUS
+    // ======================
+    if ($trx['jenis'] == 'denda') {
+
+        // hanya boleh transfer / cash
+        if (!in_array($metode, ['transfer', 'cash'])) {
+            return redirect()->back()->with('error', 'Metode tidak valid untuk denda');
+        }
+
+        // denda: cash langsung lunas
+        $status = ($metode == 'cash') ? 'lunas' : 'menunggu_verifikasi';
+
+    } else {
+
+        // pengiriman
+        if (!in_array($metode, ['cod', 'qris', 'transfer'])) {
+            return redirect()->back()->with('error', 'Metode tidak valid');
+        }
+
+        // pengiriman: COD langsung lunas
+        $status = ($metode == 'cod') ? 'lunas' : 'menunggu_verifikasi';
+    }
+
+    $dataUpdate = [
+        'metode_pembayaran' => $metode,
+        'status'            => $status
+    ];
+
+    // ======================
+    // UPLOAD BUKTI
+    // ======================
+    if ($file && $file->isValid() && !$file->hasMoved()) {
+        $namaBaru = $file->getRandomName();
+        $file->move('uploads/bukti/', $namaBaru);
+
+        $dataUpdate['bukti_pembayaran'] = $namaBaru;
+    }
+
+    // ======================
+    // UPDATE TRANSAKSI
+    // ======================
+    $model->update($id, $dataUpdate);
+
+    return redirect()->to('/peminjaman')
+        ->with('success', 'Pembayaran berhasil diproses');
+}
+
+    // ======================
+// FORM BAYAR DENDA
+// ======================
+public function bayarDenda($id)
+{
+    $model = new TransaksiModel();
+
+    $trx = $model->find($id);
+
+    if (!$trx || $trx['jenis'] != 'denda') {
+        return redirect()->back()->with('error', 'Data denda tidak valid');
+    }
+
+    return view('transaksi/bayar_denda', [
+        'transaksi' => $trx
+    ]);
+}
+
+// ======================
+// PROSES BAYAR DENDA
+// ======================
+public function prosesDenda()
+{
+    $model = new TransaksiModel();
+
+    $id     = $this->request->getPost('id_transaksi');
+    $metode = $this->request->getPost('metode');
+    $file   = $this->request->getFile('bukti');
+
+    $trx = $model->find($id);
+
+    if (!$trx || $trx['jenis'] != 'denda') {
+        return redirect()->back()->with('error', 'Data tidak valid');
+    }
+
+    if (!in_array($metode, ['cash', 'transfer'])) {
+        return redirect()->back()->with('error', 'Metode tidak valid');
+    }
+
+    $status = ($metode == 'cash') ? 'lunas' : 'menunggu_verifikasi';
+
+    $data = [
+        'metode_pembayaran' => $metode,
+        'status' => $status
+    ];
+
+    // upload bukti kalau transfer
+    if ($metode == 'transfer' && $file && $file->isValid()) {
+        $nama = $file->getRandomName();
+        $file->move('uploads/bukti/', $nama);
+        $data['bukti_pembayaran'] = $nama;
+    }
+
+    $model->update($id, $data);
+
+    return redirect()->to('/peminjaman')
+        ->with('success', 'Pembayaran denda berhasil');
+}
+
+public function verifikasiDenda($id)
+{
+    $model = new TransaksiModel();
+
+    $trx = $model->find($id);
+
+    if (!$trx || $trx['jenis'] != 'denda') {
+        return redirect()->back();
+    }
+
+    $model->update($id, [
+        'status' => 'lunas'
+    ]);
+
+    return redirect()->back()->with('success', 'Denda lunas');
+}
 }

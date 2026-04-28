@@ -115,11 +115,14 @@ class Pengembalian extends BaseController
         $deadline = $pinjam['tanggal_kembali'];
 
         // hitung denda
-        $denda = 0;
-        if ($today > $deadline) {
-            $selisih = (strtotime($today) - strtotime($deadline)) / 86400;
-            $denda = $selisih * 1000;
-        }
+        $denda = 6000; // hasil hitung
+
+$transaksiModel->insert([
+    'id_peminjaman' => $id,
+    'jenis' => 'denda',
+    'jumlah' => $denda,
+    'status' => 'belum_bayar'
+]);
 
         // simpan pengembalian (CEK DUPLIKAT)
         $sudah = $pengembalianModel

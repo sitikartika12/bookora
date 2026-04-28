@@ -2,157 +2,185 @@
 <?= $this->section('content') ?>
 
 <style>
+
+/* BACKGROUND */
 body {
-    background: #f5f7fb;
-    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6fb;
 }
 
 /* CARD UTAMA */
-.custom-card {
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+.card-dashboard {
+    border-radius: 18px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
 }
 
-/* MINI CARD */
-.mini-card {
-    background: #f1f3f9;
-    padding: 12px;
-    border-radius: 15px;
+/* STAT BOX WARNA */
+.stat-box {
+    border-radius: 14px;
+    padding: 18px;
+    color: #fff;
     text-align: center;
     transition: 0.3s;
 }
 
-.mini-card:hover {
+.stat-box:hover {
     transform: translateY(-3px);
 }
 
-/* HIGHLIGHT */
-.mini-card.highlight {
+/* WARNA */
+.bg-purple {
     background: linear-gradient(135deg, #6a5af9, #8b7bff);
-    color: white;
 }
 
-/* GRADIENT CARD */
-.gradient-card {
-    background: linear-gradient(135deg, #5f9cff, #7b61ff);
-    border-radius: 20px;
+.bg-blue {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
 }
 
-/* FAKE CHART */
-.fake-chart {
-    height: 120px;
-    background: linear-gradient(to top, #6a5af9, transparent);
-    border-radius: 10px;
-    margin-top: 10px;
+.bg-green {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
 }
 
-/* BUTTON */
-.btn-dark {
-    border-radius: 20px;
-    padding: 6px 15px;
+.bg-orange {
+    background: linear-gradient(135deg, #fa709a, #fee140);
 }
 
-.btn-light {
-    border-radius: 20px;
-    padding: 6px 15px;
-}
-
-/* TABLE */
-.table tr {
+/* LIST */
+.activity-item {
     border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+/* TITLE */
+.section-title {
+    font-weight: 600;
+    margin-bottom: 10px;
 }
 
 </style>
 
-<div class="container py-4">
+<div class="container">
 
     <!-- HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h4 class="fw-bold mb-0">Dashboard</h4>
-            <small class="text-muted">Selamat datang di <b>Bookora App</b></small>
-        </div>
-        <div>
-            <i class="bi bi-bell fs-5 me-3"></i>
-            <i class="bi bi-person-circle fs-4"></i>
-        </div>
+    <div class="mb-4">
+        <h4 class="fw-bold">Dashboard</h4>
+        <small class="text-muted">Ringkasan perpustakaan</small>
     </div>
 
-    <!-- CARD SALDO -->
-    <div class="card custom-card mb-4">
-        <div class="card-body">
-            <h6 class="text-muted">Total Saldo</h6>
-            <h3 class="fw-bold"></h3>
+    <!-- =========================
+         STATISTIK BERWARNA
+    ========================== -->
+    <div class="row mb-4">
 
-            <div class="row mt-3">
-                <div class="col-md-4">
-                    <div class="mini-card">
-                        <small>Dipinjam</small>
-                        <h6></h6>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mini-card highlight">
-                        <small>Dikembalikan</small>
-                        <h6></h6>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mini-card">
-                        <small>Sisa</small>
-                        <h6></h6>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-3">
-                <button class="btn btn-light btn-sm">Terima</button>
-                <button class="btn btn-dark btn-sm">Kirim</button>
+        <div class="col-md-3">
+            <div class="stat-box bg-purple">
+                <small>Total Buku</small>
+                <h3><?= $total_buku ?? 0 ?></h3>
             </div>
         </div>
+
+        <div class="col-md-3">
+            <div class="stat-box bg-blue">
+                <small>Total User</small>
+                <h3><?= $total_user ?? 0 ?></h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-box bg-green">
+                <small>Dipinjam</small>
+                <h3><?= $dipinjam ?? 0 ?></h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-box bg-orange">
+                <small>Dikembalikan</small>
+                <h3><?= $kembali ?? 0 ?></h3>
+            </div>
+        </div>
+
     </div>
 
-    <!-- GRID -->
+    <!-- =========================
+         GRID BAWAH
+    ========================== -->
     <div class="row">
-        <div class="col-md-8">
-            <div class="card custom-card mb-4">
-                <div class="card-body">
-                    <h6 class="fw-semibold">Statistik Peminjaman</h6>
-                    <p class="text-muted">Data bulanan</p>
-                    <div class="fake-chart"></div>
-                </div>
+
+        <!-- AKTIVITAS -->
+        <div class="col-md-6">
+            <div class="card-dashboard">
+
+                <div class="section-title">📌 Aktivitas Terbaru</div>
+
+                <?php if (!empty($aktivitas)): ?>
+                    <?php foreach ($aktivitas as $a): ?>
+                        <div class="activity-item">
+                            <?= $a['keterangan'] ?><br>
+                            <small class="text-muted"><?= $a['tanggal'] ?></small>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <small class="text-muted">Belum ada aktivitas</small>
+                <?php endif; ?>
+
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card custom-card gradient-card text-white mb-4">
-                <div class="card-body">
-                    <h6>Kesehatan Sistem</h6>
-                    <h2>0</h2>
-                    <small>Stabil</small>
-                </div>
+        <!-- BUKU -->
+        <div class="col-md-6">
+            <div class="card-dashboard">
+
+                <div class="section-title">📚 Buku Terbaru</div>
+
+                <?php if (!empty($buku)): ?>
+                    <?php foreach ($buku as $b): ?>
+                        <div class="activity-item d-flex align-items-center gap-2">
+
+                            <?php if ($b['cover']): ?>
+                                <img src="<?= base_url('uploads/buku/'.$b['cover']) ?>" width="45" style="border-radius:6px;">
+                            <?php endif; ?>
+
+                            <div>
+                                <b><?= $b['judul'] ?></b><br>
+                                <small class="text-muted"><?= $b['tahun_terbit'] ?></small>
+                            </div>
+
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <small class="text-muted">Belum ada buku</small>
+                <?php endif; ?>
+
             </div>
         </div>
+
     </div>
 
-    <!-- TABLE -->
-    <div class="card custom-card">
-        <div class="card-body">
-            <h6 class="fw-semibold mb-3">Transaksi Terbaru</h6>
-            <table class="table table-borderless">
-                <tr>
-                    <td>Pinjam Buku</td>
-                    <td class="text-success">Selesai</td>
-                    <td class="text-end">-</td>
-                </tr>
-                <tr>
-                    <td>Denda</td>
-                    <td class="text-warning">Pending</td>
-                    <td class="text-end">Rp 0</td>
-                </tr>
-            </table>
-        </div>
+    <!-- =========================
+         NOTIFIKASI
+    ========================== -->
+    <div class="card-dashboard mt-4">
+
+        <div class="section-title">🔔 Notifikasi</div>
+
+        <?php if (!empty($telat)): ?>
+            <div class="alert alert-warning">
+                ⚠️ Ada <?= count($telat) ?> buku belum dikembalikan
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($denda)): ?>
+            <div class="alert alert-danger">
+                💰 Ada denda belum dibayar
+            </div>
+        <?php endif; ?>
+
+        <?php if (empty($telat) && empty($denda)): ?>
+            <small class="text-muted">Tidak ada notifikasi</small>
+        <?php endif; ?>
+
     </div>
 
 </div>
